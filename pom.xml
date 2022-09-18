@@ -1,0 +1,81 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0">
+
+    <modelVersion>4.0.0</modelVersion>
+
+
+    <groupId>com.passfailerror</groupId>
+    <artifactId>jenkinson</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+
+
+    <packaging>jar</packaging>
+
+    <name>Jenkinson</name>
+
+    <properties>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+    </properties>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.11</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <version>3.0.9</version>
+            <type>pom</type>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>MavenCentral</id>
+            <name>Maven repository</name>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
+        <repository>
+            <id>jenkins-ci-releases</id>
+            <url>https://repo.jenkins-ci.org/releases/</url>
+        </repository>
+    </repositories>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                <groupId>org.codehaus.gmavenplus</groupId>
+                <artifactId>gmavenplus-plugin</artifactId>
+                <version>1.13.0</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+                <plugin>
+                    <groupId>org.codehaus.gmavenplus</groupId>
+                    <artifactId>gmavenplus-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <id>compile-groovy</id>
+                            <phase>compile</phase>
+                            <goals>
+                                <goal>compile</goal>
+                            </goals>
+                        </execution>
+                        <execution>
+                            <id>compile-groovy-tests</id>
+                            <phase>test-compile</phase>
+                            <goals>
+                                <goal>compileTests</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+        </plugins>
+    </build>
+
+</project>
