@@ -14,6 +14,7 @@ pipeline {
             steps {
                 echo 'Second'
                 sh 'java -version'
+                env.SECOND_STAGE_VAR='value'
             }
         }
     }

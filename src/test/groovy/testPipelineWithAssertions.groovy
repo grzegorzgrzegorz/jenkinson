@@ -68,12 +68,33 @@ class testPipelineWithAssertions extends GroovyTestCase {
 
     }
 
-    void testPipeline() {
+    void test_stepWasCalled() {
         pipelineScript.run()
-        ResultStackProcessor.getResultStack().print()
         assert Assertion.stage("First stage").calls("sh")
-        assert !Assertion.stage("First stage").hasEnvVariable("test1")
+    }
+
+    void test_unexistingStepWasNotCalled() {
+        pipelineScript.run()
+        assert Assertion.stage("First stage").calls("unexisting") == false
+    }
+
+    void test_stageHasEnvVariable_setInside(){
+        pipelineScript.run()
         assert Assertion.stage("First stage").hasEnvVariable("TEST_GLOBAL_VAR")
     }
 
+    void test_stageDoesntHave_unexistingEnvVariable(){
+        pipelineScript.run()
+        assert Assertion.stage("First stage").hasEnvVariable("unexisting") == false
+    }
+
+    void test_stageDoesntHaveEnvVariable_setInConsecutiveStep(){
+        pipelineScript.run()
+        assert Assertion.stage("First stage").hasEnvVariable("SECOND_STAGE_VAR") == false
+    }
+
+    void test_stageHasEnvVariable_setInPreviousStep(){
+        pipelineScript.run()
+        assert Assertion.stage("Second stage").hasEnvVariable("TEST_GLOBAL_VAR")
+    }
 }
