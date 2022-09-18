@@ -1,4 +1,6 @@
-package com.passfailerror
+package com.passfailerror.assertion
+
+import com.passfailerror.resultStack.ResultStackValidator
 
 class Assertion {
 

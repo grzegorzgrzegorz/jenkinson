@@ -1,6 +1,5 @@
-import com.passfailerror.ResultStackProcessor
 import groovy.test.GroovyTestCase
-import com.passfailerror.ResultStackProcessor
+import com.passfailerror.resultStack.ResultStackProcessor
 
 import java.nio.file.Paths
 

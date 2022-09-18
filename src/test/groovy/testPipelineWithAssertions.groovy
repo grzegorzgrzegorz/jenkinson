@@ -1,6 +1,6 @@
-import com.passfailerror.Assertion
-import com.passfailerror.ResultStack
-import com.passfailerror.ResultStackProcessor
+import com.passfailerror.assertion.Assertion
+import com.passfailerror.resultStack.ResultStack
+import com.passfailerror.resultStack.ResultStackProcessor
 import groovy.test.GroovyTestCase
 
 import java.nio.file.Files
