@@ -52,7 +52,8 @@ class testPipelineWithAssertions extends GroovyTestCase {
 
 
     void setUp() {
-        def pipelinePath = Paths.get("src/main/groovy/com/passfailerror/simplePipeline.groovy")
+        def pipelinePath = Paths.get(this.class.getResource("simplePipeline.groovy").toURI())
+
         def pipelineFile = pipelinePath.toFile()
 
         ResultStackProcessor.setPipelineFile(pipelineFile)
