@@ -10,10 +10,10 @@ class ResultStackProcessor {
 
 
     void storeInvocation(syntaxItem, parameters, runtimeVariables) {
-        def stackLine = createStackLine()
+        def fileContentBasedCallStack = createStackLine()
         def syntaxItemInvocation = [:]
         syntaxItemInvocation.put(syntaxItem, parameters);
-        resultStack.getInvocationStack().add(new ResultStackEntry(stackLine, syntaxItemInvocation, getDeepCopy(runtimeVariables)));
+        resultStack.getInvocationStack().add(new ResultStackEntry(fileContentBasedCallStack, syntaxItemInvocation, getDeepCopy(runtimeVariables)));
     }
 
     def getDeepCopy(runtimeVariables){
@@ -51,7 +51,7 @@ class ResultStackProcessor {
     }
 
     def getResultStackEntriesWithStackLineContainingString(String name){
-        return resultStack.getInvocationStack().findAll(item -> item.stackLine.contains(name))
+        return resultStack.getInvocationStack().findAll(item -> item.fileContentBasedCallStack.contains(name))
     }
 
 }

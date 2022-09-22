@@ -9,7 +9,7 @@ class ResultStackValidator {
     }
 
     boolean resultStackHasStageWithStep(String stageName, String stepName){
-        def result = ResultStackProcessor.getInstance().getResultStack().getInvocationStack().findAll(item->item.stackLine.contains(stageName))
+        def result = ResultStackProcessor.getInstance().getResultStack().getInvocationStack().findAll(item->item.fileContentBasedCallStack.contains(stageName))
         if(result.size()>0){
             return resultStackHasStep(result, stepName)
         }
@@ -26,7 +26,7 @@ class ResultStackValidator {
     }
 
     boolean resultStackHasStageWithEnvVariable(String stageName, String variableName){
-        def result = ResultStackProcessor.getInstance().getResultStack().getInvocationStack().findAll(item->item.stackLine.contains(stageName))
+        def result = ResultStackProcessor.getInstance().getResultStack().getInvocationStack().findAll(item->item.fileContentBasedCallStack.contains(stageName))
         if(result.size()>0) {
             return resultStackHasEnvVariable(result, variableName)
         }

@@ -11,6 +11,6 @@ class ResultStack {
 
     def print(){
         invocationStack.each {item ->
-            println(item.getStackLine()+delimiter+item.getInvocations().toString()+delimiter+item.getRuntimeVariables().toString())}
+            println(item.getFileContentBasedCallStack()+delimiter+item.getInvocations().toString()+delimiter+item.getRuntimeVariables().toString())}
     }
 }
