@@ -2,6 +2,8 @@ package com.passfailerror
 
 
 import com.passfailerror.resultStack.ResultStackProcessor
+import com.passfailerror.syntax.Sections
+import com.passfailerror.syntax.Steps
 import groovy.util.logging.Slf4j
 
 import java.nio.file.Path
@@ -11,15 +13,13 @@ import java.nio.file.Paths
 public class Jenkinson {
 
     Script pipelineScript
-    def steps = ["label", "echo", "sh"]
-    def sections = ["pipeline", "agent", "stages", "stage", "steps"]
 
 
     def put(String pipelineFileName) {
         def pipelinePath = Paths.get(this.class.getClassLoader().getResource(pipelineFileName).toURI())
         ResultStackProcessor.initializeFromPath(pipelinePath)
         pipelineScript = getPipelineScript(pipelinePath)
-        mockJenkins(pipelineScript, steps, sections)
+        mockJenkins(pipelineScript)
     }
 
     Script getPipelineScript(Path pipelinePath) {
@@ -34,38 +34,10 @@ public class Jenkinson {
         pipelineScript.run()
     }
 
-    def mockJenkins(pipelineScript, mockedSteps, mockedSections) {
-        mockSteps(pipelineScript, mockedSteps)
-        mockSections(pipelineScript, mockedSections)
+    def mockJenkins(pipelineScript) {
+        Steps.instance.mock(pipelineScript)
+        Sections.instance.mock(pipelineScript)
     }
 
-    def mockSections(pipelineScript, mockedSections) {
-        mockedSections.each {
-            section ->
-                def currentSection = section
-                pipelineScript.metaClass."$currentSection" = { Object... params ->
-                    log.info(currentSection)
-                    if (params.length > 1) {
-                        params[1].call() // stage("name"){closure}
-                    } else {
-                        params[0].call() // steps{closure}
-                    }
-                    ResultStackProcessor.getInstance().storeInvocation(currentSection, params, pipelineScript.getBinding().getVariables())
-                }
-
-        }
-    }
-
-
-    def mockSteps(pipelineScript, mockedSteps) {
-        mockedSteps.each {
-            step ->
-                def currentStep = step
-                pipelineScript.metaClass."$currentStep" = { Object... params ->
-                    log.info(currentStep + " " + params[0].toString())
-                    ResultStackProcessor.getInstance().storeInvocation(currentStep, params, pipelineScript.getBinding().getVariables())
-                }
-        }
-    }
 
 }
