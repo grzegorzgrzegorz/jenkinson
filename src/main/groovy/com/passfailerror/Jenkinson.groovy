@@ -1,10 +1,9 @@
 package com.passfailerror
 
-import com.passfailerror.resultStack.ResultStack
+
 import com.passfailerror.resultStack.ResultStackProcessor
 import groovy.util.logging.Slf4j
 
-import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 
@@ -18,7 +17,7 @@ public class Jenkinson {
 
     def put(String pipelineFileName) {
         def pipelinePath = Paths.get(this.class.getClassLoader().getResource(pipelineFileName).toURI())
-        setResultStackProcessor(pipelinePath)
+        ResultStackProcessor.initializeFromPath(pipelinePath)
         pipelineScript = getPipelineScript(pipelinePath)
         mockJenkins(pipelineScript, steps, sections)
     }
@@ -29,13 +28,6 @@ public class Jenkinson {
         binding.setProperty("env", [:])
         GroovyShell shell = new GroovyShell(binding)
         return shell.parse(pipelineFile)
-    }
-
-    def setResultStackProcessor(pipelinePath) {
-        def pipelineFile = pipelinePath.toFile()
-        ResultStackProcessor.setPipelineFile(pipelineFile)
-        ResultStackProcessor.setPipelineFileContent(Files.readAllLines(pipelinePath))
-        ResultStackProcessor.setResultStack(new ResultStack())
     }
 
     def run() {

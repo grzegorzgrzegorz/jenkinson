@@ -1,10 +1,23 @@
 package com.passfailerror.resultStack
 
+import java.nio.file.Files
+import java.nio.file.Path
+
 class ResultStackProcessor {
 
-    static File pipelineFile
-    static List<String> pipelineFileContent
+    static File pipelineFile = new File("Script1.groovy")
+    static List<String> content
     static ResultStack resultStack
+
+    static initializeFromPath(Path pipelinePath){
+        setPipelineFile(pipelinePath.toFile())
+        initializeFromContent(Files.readAllLines(pipelinePath))
+    }
+
+    static initializeFromContent(List<String> contentList){
+        setContent(contentList)
+        ResultStackProcessor.setResultStack(new ResultStack())
+    }
 
     static getInstance(){return new ResultStackProcessor()}
 
@@ -28,8 +41,8 @@ class ResultStackProcessor {
         return stackLineAsList.join(",")
     }
 
-    def getLineNumbersFromSTElements(pipelineSTackTraceElements) {
-        return pipelineSTackTraceElements.collect(item -> item.getLineNumber()).sort()
+    def getLineNumbersFromSTElements(pipelineStackTraceElements) {
+        return pipelineStackTraceElements.collect(item -> item.getLineNumber()).sort()
     }
 
     def getPipelineFileSTELements() {
@@ -43,7 +56,7 @@ class ResultStackProcessor {
                 continue
             }
             def index = lineNumber - 1
-            def line = pipelineFileContent.get(index).replace("{", "").replace("\t", "").replace("}","").trim()
+            def line = content.get(index).replace("{", "").replace("\t", "").replace("}","").trim()
             def prependix = ""
             result.add(prependix + line)
         }

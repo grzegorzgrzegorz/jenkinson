@@ -1,11 +1,11 @@
 package com.passfailerror.resultStack
 
 class ResultStackEntry {
-    def fileContentBasedCallStack
-    def invocations
-    def runtimeVariables
+    String fileContentBasedCallStack
+    Map<String, List<String>> invocations
+    LinkedHashMap<String, Map<String, String>> runtimeVariables
 
-    public ResultStackEntry(String fileContentBasedCallStack, Map invocations, LinkedHashMap runtimeVariables){
+    public ResultStackEntry(String fileContentBasedCallStack, Map invocations, LinkedHashMap runtimeVariables) {
         this.fileContentBasedCallStack = fileContentBasedCallStack
         this.invocations = invocations
         this.runtimeVariables = runtimeVariables
