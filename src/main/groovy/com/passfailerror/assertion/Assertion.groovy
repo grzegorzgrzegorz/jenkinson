@@ -15,10 +15,10 @@ class Assertion {
     }
 
     boolean calls(String stepName){
-        return ResultStackValidator.getInstance().stageCallsStep(stageName, stepName)
+        return ResultStackValidator.instance.stageCallsStep(stageName, stepName)
     }
 
     boolean hasEnvVariable(String variableName){
-        return ResultStackValidator.getInstance().stageHasEnvVariable(stageName, variableName)
+        return ResultStackValidator.instance.stageHasEnvVariable(stageName, variableName)
     }
 }

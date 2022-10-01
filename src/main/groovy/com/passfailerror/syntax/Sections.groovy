@@ -3,9 +3,9 @@ package com.passfailerror.syntax
 import com.passfailerror.resultStack.ResultStackProcessor
 import groovy.util.logging.Slf4j
 
-@Singleton
+
 @Slf4j
-class Sections implements Syntax{
+class Sections extends Syntax {
 
     def sections = ["pipeline", "agent", "stages", "stage", "steps"]
 
@@ -20,7 +20,7 @@ class Sections implements Syntax{
                     } else {
                         params[0].call() // steps{closure}
                     }
-                    ResultStackProcessor.getInstance().storeInvocation(currentSection, params, pipelineScript.getBinding().getVariables())
+                    ResultStackProcessor.instance.storeInvocation(currentSection, params, pipelineScript.getBinding().getVariables())
                 }
 
         }

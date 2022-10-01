@@ -1,7 +1,7 @@
 package com.passfailerror.syntax
 
-interface Syntax {
+class Syntax {
 
-    def mock(pipelineScript)
+    def mock(pipelineScript) {}
 
 }

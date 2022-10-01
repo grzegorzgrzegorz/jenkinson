@@ -1,22 +1,21 @@
 package com.passfailerror.resultStack
 
+@Singleton
 class ResultStackValidator {
-
-    static getInstance(){return new ResultStackValidator()}
 
     boolean stageCallsStep(String stageName, String stepName){
         return resultStackHasStageWithStep(stageName, stepName)
     }
 
-    boolean resultStackHasStageWithStep(String stageName, String stepName){
-        def result = ResultStackProcessor.getInstance().getResultStack().getInvocationStack().findAll(item->item.fileContentBasedCallStack.contains(stageName))
+    private boolean resultStackHasStageWithStep(String stageName, String stepName){
+        def result = ResultStack.instance.getInvocationStack().findAll(item->item.fileContentBasedCallStack.contains(stageName))
         if(result.size()>0){
             return resultStackHasStep(result, stepName)
         }
         return false
     }
 
-    boolean resultStackHasStep(List<ResultStack> resultStackList, stepName){
+    private boolean resultStackHasStep(List<ResultStack> resultStackList, stepName){
         return resultStackList
                 .findAll(resultStackEntry -> resultStackEntry.invocations.containsKey(stepName))
     }
@@ -25,15 +24,15 @@ class ResultStackValidator {
         return resultStackHasStageWithEnvVariable(stageName, variableName)
     }
 
-    boolean resultStackHasStageWithEnvVariable(String stageName, String variableName){
-        def result = ResultStackProcessor.getInstance().getResultStack().getInvocationStack().findAll(item->item.fileContentBasedCallStack.contains(stageName))
+    private boolean resultStackHasStageWithEnvVariable(String stageName, String variableName){
+        def result = ResultStack.instance.getInvocationStack().findAll(item->item.fileContentBasedCallStack.contains(stageName))
         if(result.size()>0) {
             return resultStackHasEnvVariable(result, variableName)
         }
         return false
     }
 
-    boolean resultStackHasEnvVariable(List<ResultStack> resultStackList, variableName){
+    private boolean resultStackHasEnvVariable(List<ResultStack> resultStackList, variableName){
         def resultList = resultStackList
                 .findAll(resultStackEntry -> resultStackEntry.getRuntimeVariables().get("env").containsKey(variableName))
         if (resultList.size() > 0){

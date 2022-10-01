@@ -1,6 +1,5 @@
 package com.passfailerror
 
-
 import com.passfailerror.resultStack.ResultStackProcessor
 import com.passfailerror.syntax.Sections
 import com.passfailerror.syntax.Steps
@@ -13,11 +12,13 @@ import java.nio.file.Paths
 public class Jenkinson {
 
     Script pipelineScript
+    Sections sections = new Sections()
+    Steps steps = new Steps()
 
 
     def put(String pipelineFileName) {
         def pipelinePath = Paths.get(this.class.getClassLoader().getResource(pipelineFileName).toURI())
-        ResultStackProcessor.initializeFromPath(pipelinePath)
+        ResultStackProcessor.instance.initializeFromPath(pipelinePath)
         pipelineScript = getPipelineScript(pipelinePath)
         mockJenkins(pipelineScript)
     }
@@ -35,8 +36,8 @@ public class Jenkinson {
     }
 
     def mockJenkins(pipelineScript) {
-        Steps.instance.mock(pipelineScript)
-        Sections.instance.mock(pipelineScript)
+        steps.mock(pipelineScript)
+        sections.mock(pipelineScript)
     }
 
 

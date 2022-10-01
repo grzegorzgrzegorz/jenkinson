@@ -3,33 +3,35 @@ package com.passfailerror.resultStack
 import java.nio.file.Files
 import java.nio.file.Path
 
+@Singleton
 class ResultStackProcessor {
 
-    static File pipelineFile = new File("Script1.groovy")
-    static List<String> content
-    static ResultStack resultStack
+    static defaultName = "Script1.groovy"
+    File pipelineFile
+    List<String> content
 
-    static initializeFromPath(Path pipelinePath){
+    // when running Jenkinson multiple times, ResultStack.instance is the same one and without resetting it accumulates content
+
+    def initializeFromPath(Path pipelinePath) {
         setPipelineFile(pipelinePath.toFile())
-        initializeFromContent(Files.readAllLines(pipelinePath))
+        setContent(Files.readAllLines(pipelinePath))
+        ResultStack.instance.reset()
     }
 
-    static initializeFromContent(List<String> contentList){
+    def initializeFromContent(List<String> contentList) {
+        setPipelineFile(new File(defaultName))
         setContent(contentList)
-        ResultStackProcessor.setResultStack(new ResultStack())
+        ResultStack.instance.reset()
     }
-
-    static getInstance(){return new ResultStackProcessor()}
-
 
     void storeInvocation(syntaxItem, parameters, runtimeVariables) {
         def fileContentBasedCallStack = createStackLine()
         def syntaxItemInvocation = [:]
         syntaxItemInvocation.put(syntaxItem, parameters);
-        resultStack.getInvocationStack().add(new ResultStackEntry(fileContentBasedCallStack, syntaxItemInvocation, getDeepCopy(runtimeVariables)));
+        ResultStack.instance.getInvocationStack().add(new ResultStackEntry(fileContentBasedCallStack, syntaxItemInvocation, getDeepCopy(runtimeVariables)));
     }
 
-    def getDeepCopy(runtimeVariables){
+    def getDeepCopy(runtimeVariables) {
         return runtimeVariables.collectEntries { k, v ->
             [k.getClass().newInstance(k), v.getClass().newInstance(v)]
         }
@@ -52,19 +54,19 @@ class ResultStackProcessor {
     def getLinesFromPipelineFile(lineNumbers) {
         def result = []
         for (lineNumber in lineNumbers) {
-            if (lineNumber < 0){
+            if (lineNumber < 0) {
                 continue
             }
             def index = lineNumber - 1
-            def line = content.get(index).replace("{", "").replace("\t", "").replace("}","").trim()
+            def line = content.get(index).replace("{", "").replace("\t", "").replace("}", "").trim()
             def prependix = ""
             result.add(prependix + line)
         }
         return result
     }
 
-    def getResultStackEntriesWithStackLineContainingString(String name){
-        return resultStack.getInvocationStack().findAll(item -> item.fileContentBasedCallStack.contains(name))
+    def getResultStackEntriesWithStackLineContainingString(String name) {
+        return ResultStack.instance.getInvocationStack().findAll(item -> item.fileContentBasedCallStack.contains(name))
     }
 
 }
