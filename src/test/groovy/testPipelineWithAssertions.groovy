@@ -4,11 +4,14 @@ import groovy.test.GroovyTestCase
 
 class testPipelineWithAssertions extends GroovyTestCase {
 
+    def jenkinson
 
     void setUp() {
-        def jenkinson = new Jenkinson()
-        jenkinson.put("simplePipeline.groovy")
-        jenkinson.run()
+        if (jenkinson == null) {
+            jenkinson = new Jenkinson()
+            jenkinson.put("simplePipeline.groovy")
+            jenkinson.run()
+        }
     }
 
 

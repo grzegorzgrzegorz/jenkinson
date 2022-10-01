@@ -8,13 +8,13 @@ class testResultStackValidator extends GroovyTestCase {
 
 
     Script getScriptObject(String scriptContent) {
-        ResultStackProcessor.initializeFromContent(scriptContent.tokenize(System.lineSeparator()))
+        ResultStackProcessor.instance.initializeFromContent(scriptContent.tokenize(System.lineSeparator()))
         def binding = new Binding()
         binding.setProperty("env", [:])
         GroovyShell shell = new GroovyShell(binding)
         def scriptObject = shell.parse(scriptContent)
-        Steps.instance.mock(scriptObject)
-        Sections.instance.mock(scriptObject)
+        new Steps().mock(scriptObject)
+        new Sections().mock(scriptObject)
         return scriptObject
     }
 
@@ -25,7 +25,7 @@ class testResultStackValidator extends GroovyTestCase {
         //WHEN
         scriptObject.run()
         //THEN
-        assert ResultStackValidator.getInstance().stageCallsStep("unexisting stage", "echo") == false
+        assert ResultStackValidator.instance.stageCallsStep("unexisting stage", "echo") == false
     }
 
     void testExistingStageAssertion_returnsTrue_onExistingStep() {
@@ -39,7 +39,7 @@ class testResultStackValidator extends GroovyTestCase {
         //WHEN
         scriptObject.run()
         //THEN
-        assert ResultStackValidator.getInstance().stageCallsStep("test", "echo")
+        assert ResultStackValidator.instance.stageCallsStep("test", "echo")
     }
 
     void testExistingStageAssertion_returnsFalse_onUnexistingStep() {
@@ -53,7 +53,7 @@ class testResultStackValidator extends GroovyTestCase {
         //WHEN
         scriptObject.run()
         //THEN
-        assert ResultStackValidator.getInstance().stageCallsStep("test", "unexisitingStep") == false
+        assert ResultStackValidator.instance.stageCallsStep("test", "unexisitingStep") == false
     }
 
     void testUnexistingStageAssertion_returnsFalse_onExistingEnvVariable() {
@@ -68,7 +68,7 @@ class testResultStackValidator extends GroovyTestCase {
         //WHEN
         scriptObject.run()
         //THEN
-        assert ResultStackValidator.getInstance().stageHasEnvVariable("unexisting", "TEST1") == false
+        assert ResultStackValidator.instance.stageHasEnvVariable("unexisting", "TEST1") == false
     }
 
     void testExistingStageAssertion_returnsFalse_onUnexistingEnvVariable() {
@@ -83,7 +83,7 @@ class testResultStackValidator extends GroovyTestCase {
         //WHEN
         scriptObject.run()
         //THEN
-        assert ResultStackValidator.getInstance().stageHasEnvVariable("test", "unexistingVariable") == false
+        assert ResultStackValidator.instance.stageHasEnvVariable("test", "unexistingVariable") == false
     }
 
     void testExistingStageAssertion_returnsTrue_onExistingEnvVariable() {
@@ -98,6 +98,6 @@ class testResultStackValidator extends GroovyTestCase {
         //WHEN
         scriptObject.run()
         //THEN
-        assert ResultStackValidator.getInstance().stageHasEnvVariable("test", "TEST1")
+        assert ResultStackValidator.instance.stageHasEnvVariable("test", "TEST1")
     }
 }
