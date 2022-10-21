@@ -65,10 +65,6 @@ class ResultStackProcessor {
         return result
     }
 
-    def getResultStackEntriesWithStackLineContainingString(String name) {
-        return ResultStack.instance.getInvocationStack().findAll(item -> item.fileContentBasedCallStack.contains(name))
-    }
-
     boolean mapContainsValue(Map map, String valueParam) {
         return map.entrySet().stream().filter(entry -> listContainsValue(entry.value.toList(), valueParam)).findAny().isPresent()
     }
