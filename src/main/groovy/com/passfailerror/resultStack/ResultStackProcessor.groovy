@@ -12,54 +12,54 @@ class ResultStackProcessor {
 
     // when running Jenkinson multiple times, ResultStack.instance is the same one and without resetting it accumulates content
 
-    def initializeFromPath(Path pipelinePath) {
+    void initializeFromPath(Path pipelinePath) {
         setPipelineFile(pipelinePath.toFile())
         setContent(Files.readAllLines(pipelinePath))
         ResultStack.instance.reset()
     }
 
-    def initializeFromContent(List<String> contentList) {
+    void initializeFromContent(List<String> contentList) {
         setPipelineFile(new File(defaultName))
         setContent(contentList)
         ResultStack.instance.reset()
     }
 
-    void storeInvocation(syntaxItem, parameters, runtimeVariables) {
-        def fileContentBasedCallStack = createStackLine()
-        def syntaxItemInvocation = [:]
-        syntaxItemInvocation.put(syntaxItem, parameters);
-        ResultStack.instance.getInvocationStack().add(new ResultStackEntry(fileContentBasedCallStack, syntaxItemInvocation, getDeepCopy(runtimeVariables)));
+    void storeInvocation(String syntaxItem, Object[] parameters, LinkedHashMap<String, LinkedHashMap<String, String>> runtimeVariables) {
+        String fileContentBasedCallStack = createStackLine()
+        LinkedHashMap<Object, Object> syntaxItemInvocation = [:]
+        syntaxItemInvocation.put(syntaxItem, parameters)
+        ResultStack.instance.getInvocationStack().add(new ResultStackEntry(fileContentBasedCallStack, syntaxItemInvocation, getDeepCopy(runtimeVariables)))
     }
 
-    def getDeepCopy(runtimeVariables) {
+    Map<Object, Object> getDeepCopy(runtimeVariables) {
         return runtimeVariables.collectEntries { k, v ->
             [k.getClass().newInstance(k), v.getClass().newInstance(v)]
         }
     }
 
-    def createStackLine() {
-        def lineNumbers = getLineNumbersFromSTElements(getPipelineFileSTELements())
-        def stackLineAsList = getLinesFromPipelineFile(lineNumbers)
+    String createStackLine() {
+        List<Integer> lineNumbers = getLineNumbersFromSTElements(getPipelineFileSTELements())
+        List<String> stackLineAsList = getLinesFromPipelineFile(lineNumbers)
         return stackLineAsList.join(",")
     }
 
-    def getLineNumbersFromSTElements(pipelineStackTraceElements) {
+    List<Integer> getLineNumbersFromSTElements(pipelineStackTraceElements) {
         return pipelineStackTraceElements.collect(item -> item.getLineNumber()).sort()
     }
 
-    def getPipelineFileSTELements() {
-        return Thread.currentThread().getStackTrace().findAll { item -> item.getFileName() == pipelineFile.getName(); }
+    List<StackTraceElement> getPipelineFileSTELements() {
+        return Thread.currentThread().getStackTrace().findAll { item -> item.getFileName() == pipelineFile.getName() }
     }
 
-    def getLinesFromPipelineFile(lineNumbers) {
-        def result = []
+    List<String> getLinesFromPipelineFile(List<Integer> lineNumbers) {
+        List<String> result = []
         for (lineNumber in lineNumbers) {
             if (lineNumber < 0) {
                 continue
             }
-            def index = lineNumber - 1
-            def line = content.get(index).replace("{", "").replace("\t", "").replace("}", "").trim()
-            def prependix = ""
+            int index = lineNumber - 1
+            String line = content.get(index).replace("{", "").replace("\t", "").replace("}", "").trim()
+            String prependix = ""
             result.add(prependix + line)
         }
         return result
@@ -67,6 +67,33 @@ class ResultStackProcessor {
 
     def getResultStackEntriesWithStackLineContainingString(String name) {
         return ResultStack.instance.getInvocationStack().findAll(item -> item.fileContentBasedCallStack.contains(name))
+    }
+
+    boolean mapContainsValue(Map map, String valueParam) {
+        return map.entrySet().stream().filter(entry -> listContainsValue(entry.value.toList(), valueParam)).findAny().isPresent()
+    }
+
+    boolean listContainsValue(List<String> list, String value) {
+        return list.stream().filter(item -> item.contains(value)).findAny().isPresent()
+    }
+
+    List<ResultStackEntry> getResultStackListHavingStepWithParam(List<ResultStackEntry> resultStackList, String stepName, String param) {
+        return getResultStackListHavingStep(resultStackList, stepName).
+                findAll(resultStackEntry -> mapContainsValue(resultStackEntry.invocations, param))
+    }
+
+    List<ResultStackEntry> getResultStackListHavingStep(List<ResultStackEntry> resultStackList, String stepName) {
+        return resultStackList
+                .findAll(resultStackEntry -> resultStackEntry.invocations.containsKey(stepName))
+    }
+
+    List<ResultStackEntry> getResultStackListHavingStage(String stageName) {
+        return ResultStack.instance.getInvocationStack().findAll(item -> item.fileContentBasedCallStack.contains(stageName))
+    }
+
+    List<ResultStackEntry> getResultStackListHavingEnvVariable(List<ResultStackEntry> resultStackList, String variableName) {
+        return resultStackList
+                .findAll(resultStackEntry -> resultStackEntry.getRuntimeVariables().get("env").containsKey(variableName))
     }
 
 }

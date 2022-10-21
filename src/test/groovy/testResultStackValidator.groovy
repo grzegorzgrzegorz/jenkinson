@@ -7,7 +7,7 @@ import groovy.test.GroovyTestCase
 class testResultStackValidator extends GroovyTestCase {
 
 
-    Script getScriptObject(String scriptContent) {
+    static Script getScriptObject(String scriptContent) {
         ResultStackProcessor.instance.initializeFromContent(scriptContent.tokenize(System.lineSeparator()))
         def binding = new Binding()
         binding.setProperty("env", [:])
@@ -40,6 +40,48 @@ class testResultStackValidator extends GroovyTestCase {
         scriptObject.run()
         //THEN
         assert ResultStackValidator.instance.stageCallsStep("test", "echo")
+    }
+
+    void testExistingStageAssertion_returnsTrue_onExistingStepWithParam() {
+        //GIVEN
+        String scriptContent = '''
+            stage("test"){
+                echo "testing"
+            }
+            '''
+        def scriptObject = getScriptObject(scriptContent)
+        //WHEN
+        scriptObject.run()
+        //THEN
+        assert ResultStackValidator.instance.stageCallsStepWithParam("test", "echo", "testing")
+    }
+
+    void testExistingStageAssertion_returnsFalse_onExistingStepWithUnexistingParam() {
+        //GIVEN
+        String scriptContent = '''
+            stage("test"){
+                echo "testing"
+            }
+            '''
+        def scriptObject = getScriptObject(scriptContent)
+        //WHEN
+        scriptObject.run()
+        //THEN
+        assert ResultStackValidator.instance.stageCallsStepWithParam("test", "echo", "testing2") == false
+    }
+
+    void testExistingStageAssertion_returnsFalse_onUnexistingStepWithExistingParam() {
+        //GIVEN
+        String scriptContent = '''
+            stage("test"){
+                echo "testing"
+            }
+            '''
+        def scriptObject = getScriptObject(scriptContent)
+        //WHEN
+        scriptObject.run()
+        //THEN
+        assert ResultStackValidator.instance.stageCallsStepWithParam("test", "echo2", "testing") == false
     }
 
     void testExistingStageAssertion_returnsFalse_onUnexistingStep() {
