@@ -4,7 +4,7 @@ import com.passfailerror.Jenkinson
 import com.passfailerror.assertion.Assertion
 import groovy.test.GroovyTestCase
 
-class testPipelineWithAssertions extends GroovyTestCase {
+class testStageAssertions extends GroovyTestCase {
 
     def jenkinson
 
