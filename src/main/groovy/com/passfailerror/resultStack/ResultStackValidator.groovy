@@ -3,12 +3,12 @@ package com.passfailerror.resultStack
 @Singleton
 class ResultStackValidator {
 
-    boolean stageCallsStepWithParam(String stageName, String stepName, String param) {
-        return resultStackHasStageWithStep(stageName, stepName, param)
+    boolean declarativeItemCallsStepWithParam(String declarativeItem, String stepName, String param) {
+        return resultStackHasStageWithStep(declarativeItem, stepName, param)
     }
 
-    private boolean resultStackHasStageWithStep(String stageName, String stepName, String param) {
-        List<ResultStackEntry> resultStackListRelatedToStage = ResultStackProcessor.instance.getResultStackListHavingStage(stageName)
+    private boolean resultStackHasStageWithStep(String declarativeItem, String stepName, String param) {
+        List<ResultStackEntry> resultStackListRelatedToStage = ResultStackProcessor.instance.getResultStackListHavingDeclarativeItem(declarativeItem)
         if (resultStackListRelatedToStage.size() > 0) {
             if (param) {
                 return resultStackHasStepWithParam(resultStackListRelatedToStage, stepName, param)
@@ -33,12 +33,12 @@ class ResultStackValidator {
         return false
     }
 
-    boolean stageHasEnvVariable(String stageName, String variableName) {
-        return resultStackHasStageWithEnvVariable(stageName, variableName)
+    boolean declarativeItemHasEnvVariable(String declarativeItem, String variableName) {
+        return resultStackHasDeclarativeItemWithEnvVariable(declarativeItem, variableName)
     }
 
-    private boolean resultStackHasStageWithEnvVariable(String stageName, String variableName) {
-         List<ResultStackEntry> resultStackListRelatedToStage = ResultStackProcessor.instance.getResultStackListHavingStage(stageName)
+    private boolean resultStackHasDeclarativeItemWithEnvVariable(String declarativeItem, String variableName) {
+         List<ResultStackEntry> resultStackListRelatedToStage = ResultStackProcessor.instance.getResultStackListHavingDeclarativeItem(declarativeItem)
          if (resultStackListRelatedToStage.size() > 0) {
             return resultStackHasEnvVariable(resultStackListRelatedToStage, variableName)
         }

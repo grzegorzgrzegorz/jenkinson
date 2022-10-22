@@ -27,7 +27,7 @@ class testResultStackValidator extends GroovyTestCase {
         //WHEN
         scriptObject.run()
         //THEN
-        assert ResultStackValidator.instance.stageCallsStepWithParam("unexisting stage", "echo",null) == false
+        assert ResultStackValidator.instance.declarativeItemCallsStepWithParam("unexisting stage", "echo",null) == false
     }
 
     void testExistingStageAssertion_returnsTrue_onExistingStep() {
@@ -41,7 +41,7 @@ class testResultStackValidator extends GroovyTestCase {
         //WHEN
         scriptObject.run()
         //THEN
-        assert ResultStackValidator.instance.stageCallsStepWithParam("test", "echo", null)
+        assert ResultStackValidator.instance.declarativeItemCallsStepWithParam("test", "echo", null)
     }
 
     void testExistingStageAssertion_returnsTrue_onExistingStepWithParam() {
@@ -55,7 +55,7 @@ class testResultStackValidator extends GroovyTestCase {
         //WHEN
         scriptObject.run()
         //THEN
-        assert ResultStackValidator.instance.stageCallsStepWithParam("test", "echo", "testing")
+        assert ResultStackValidator.instance.declarativeItemCallsStepWithParam("test", "echo", "testing")
     }
 
     void testExistingStageAssertion_returnsFalse_onExistingStepWithUnexistingParam() {
@@ -69,7 +69,7 @@ class testResultStackValidator extends GroovyTestCase {
         //WHEN
         scriptObject.run()
         //THEN
-        assert ResultStackValidator.instance.stageCallsStepWithParam("test", "echo", "testing2") == false
+        assert ResultStackValidator.instance.declarativeItemCallsStepWithParam("test", "echo", "testing2") == false
     }
 
     void testExistingStageAssertion_returnsFalse_onUnexistingStepWithExistingParam() {
@@ -83,7 +83,7 @@ class testResultStackValidator extends GroovyTestCase {
         //WHEN
         scriptObject.run()
         //THEN
-        assert ResultStackValidator.instance.stageCallsStepWithParam("test", "echo2", "testing") == false
+        assert ResultStackValidator.instance.declarativeItemCallsStepWithParam("test", "echo2", "testing") == false
     }
 
     void testExistingStageAssertion_returnsFalse_onUnexistingStep() {
@@ -97,7 +97,7 @@ class testResultStackValidator extends GroovyTestCase {
         //WHEN
         scriptObject.run()
         //THEN
-        assert ResultStackValidator.instance.stageCallsStepWithParam("test", "unexisitingStep", null) == false
+        assert ResultStackValidator.instance.declarativeItemCallsStepWithParam("test", "unexisitingStep", null) == false
     }
 
     void testUnexistingStageAssertion_returnsFalse_onExistingEnvVariable() {
@@ -112,7 +112,7 @@ class testResultStackValidator extends GroovyTestCase {
         //WHEN
         scriptObject.run()
         //THEN
-        assert ResultStackValidator.instance.stageHasEnvVariable("unexisting", "TEST1") == false
+        assert ResultStackValidator.instance.declarativeItemHasEnvVariable("unexisting", "TEST1") == false
     }
 
     void testExistingStageAssertion_returnsFalse_onUnexistingEnvVariable() {
@@ -127,7 +127,7 @@ class testResultStackValidator extends GroovyTestCase {
         //WHEN
         scriptObject.run()
         //THEN
-        assert ResultStackValidator.instance.stageHasEnvVariable("test", "unexistingVariable") == false
+        assert ResultStackValidator.instance.declarativeItemHasEnvVariable("test", "unexistingVariable") == false
     }
 
     void testExistingStageAssertion_returnsTrue_onExistingEnvVariable() {
@@ -142,6 +142,6 @@ class testResultStackValidator extends GroovyTestCase {
         //WHEN
         scriptObject.run()
         //THEN
-        assert ResultStackValidator.instance.stageHasEnvVariable("test", "TEST1")
+        assert ResultStackValidator.instance.declarativeItemHasEnvVariable("test", "TEST1")
     }
 }

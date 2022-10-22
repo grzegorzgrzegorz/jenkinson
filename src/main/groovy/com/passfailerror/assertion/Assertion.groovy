@@ -8,10 +8,10 @@ class Assertion {
         return new Assertion(stageName)
     }
 
-    String stageName
+    String declarativeItem
 
-    Assertion(String stageName){
-        this.stageName = stageName
+    Assertion(String declarativeItem){
+        this.declarativeItem = declarativeItem
     }
 
     boolean calls(String stepName){
@@ -19,10 +19,10 @@ class Assertion {
     }
 
     boolean calls(String stepName, String param){
-        return ResultStackValidator.instance.stageCallsStepWithParam(stageName, stepName, param)
+        return ResultStackValidator.instance.declarativeItemCallsStepWithParam(declarativeItem, stepName, param)
     }
 
     boolean hasEnvVariable(String variableName){
-        return ResultStackValidator.instance.stageHasEnvVariable(stageName, variableName)
+        return ResultStackValidator.instance.declarativeItemHasEnvVariable(declarativeItem, variableName)
     }
 }

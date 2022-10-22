@@ -77,8 +77,8 @@ class ResultStackProcessor {
                 .findAll(resultStackEntry -> resultStackEntry.invocations.containsKey(stepName))
     }
 
-    List<ResultStackEntry> getResultStackListHavingStage(String stageName) {
-        return ResultStack.instance.getInvocationStack().findAll(item -> item.fileContentBasedCallStack.contains(stageName))
+    List<ResultStackEntry> getResultStackListHavingDeclarativeItem(String declarativeItem) {
+        return ResultStack.instance.getInvocationStack().findAll(item -> item.fileContentBasedCallStack.contains(declarativeItem))
     }
 
     List<ResultStackEntry> getResultStackListHavingEnvVariable(List<ResultStackEntry> resultStackList, String variableName) {
