@@ -67,22 +67,22 @@ class ResultStackProcessor {
         return result
     }
 
-    List<ResultStackEntry> getResultStackListHavingStepWithParam(List<ResultStackEntry> resultStackList, String stepName, String param) {
-        return getResultStackListHavingStep(resultStackList, stepName).
+    List<ResultStackEntry> getInvocationStackHavingStepWithParam(List<ResultStackEntry> invocationStack, String stepName, String param) {
+        return getInvocationStackHavingStep(invocationStack, stepName).
                 findAll(resultStackEntry -> Utils.instance.mapContainsValue(resultStackEntry.invocations, param))
     }
 
-    List<ResultStackEntry> getResultStackListHavingStep(List<ResultStackEntry> resultStackList, String stepName) {
-        return resultStackList
+    List<ResultStackEntry> getInvocationStackHavingStep(List<ResultStackEntry> invocationStack, String stepName) {
+        return invocationStack
                 .findAll(resultStackEntry -> resultStackEntry.invocations.containsKey(stepName))
     }
 
-    List<ResultStackEntry> getResultStackListHavingDeclarativeItem(String declarativeItem) {
+    List<ResultStackEntry> getInvocationStackHavingDeclarativeItem(String declarativeItem) {
         return ResultStack.instance.getInvocationStack().findAll(item -> item.fileContentBasedCallStack.contains(declarativeItem))
     }
 
-    List<ResultStackEntry> getResultStackListHavingEnvVariable(List<ResultStackEntry> resultStackList, String variableName) {
-        return resultStackList
+    List<ResultStackEntry> getInvocationStackHavingEnvVariable(List<ResultStackEntry> invocationStack, String variableName) {
+        return invocationStack
                 .findAll(resultStackEntry -> resultStackEntry.getRuntimeVariables().get("env").containsKey(variableName))
     }
 

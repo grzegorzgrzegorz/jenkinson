@@ -17,26 +17,26 @@ class ResultStackValidator {
     }
 
     private boolean resultStackHasStageWithStep(String declarativeItem, String stepName, String param) {
-        List<ResultStackEntry> resultStackListRelatedToStage = ResultStackProcessor.instance.getResultStackListHavingDeclarativeItem(declarativeItem)
-        if (resultStackListRelatedToStage.size() > 0) {
+        List<ResultStackEntry> invocationStackRelatedToStage = ResultStackProcessor.instance.getInvocationStackHavingDeclarativeItem(declarativeItem)
+        if (invocationStackRelatedToStage.size() > 0) {
             if (param) {
-                return resultStackHasStepWithParam(resultStackListRelatedToStage, stepName, param)
+                return resultStackHasStepWithParam(invocationStackRelatedToStage, stepName, param)
             } else {
-                return resultStackHasStep(resultStackListRelatedToStage, stepName)
+                return resultStackHasStep(invocationStackRelatedToStage, stepName)
             }
         }
         return false
     }
 
-    private boolean resultStackHasStepWithParam(List<ResultStackEntry> resultStackList, String stepName, String param) {
-        if (ResultStackProcessor.instance.getResultStackListHavingStepWithParam(resultStackList, stepName, param).size() > 0) {
+    private boolean resultStackHasStepWithParam(List<ResultStackEntry> invocationStack, String stepName, String param) {
+        if (ResultStackProcessor.instance.getInvocationStackHavingStepWithParam(invocationStack, stepName, param).size() > 0) {
             return true
         }
         return false
     }
 
-    private boolean resultStackHasStep(List<ResultStackEntry> resultStackList, String stepName) {
-        if (ResultStackProcessor.instance.getResultStackListHavingStep(resultStackList, stepName).size() > 0) {
+    private boolean resultStackHasStep(List<ResultStackEntry> invocationStack, String stepName) {
+        if (ResultStackProcessor.instance.getInvocationStackHavingStep(invocationStack, stepName).size() > 0) {
             return true
         }
         return false
@@ -47,15 +47,15 @@ class ResultStackValidator {
     }
 
     private boolean resultStackHasDeclarativeItemWithEnvVariable(String declarativeItem, String variableName) {
-         List<ResultStackEntry> resultStackListRelatedToStage = ResultStackProcessor.instance.getResultStackListHavingDeclarativeItem(declarativeItem)
-         if (resultStackListRelatedToStage.size() > 0) {
-            return resultStackHasEnvVariable(resultStackListRelatedToStage, variableName)
+         List<ResultStackEntry> invocationStackRelatedToStage = ResultStackProcessor.instance.getInvocationStackHavingDeclarativeItem(declarativeItem)
+         if (invocationStackRelatedToStage.size() > 0) {
+            return resultStackHasEnvVariable(invocationStackRelatedToStage, variableName)
         }
         return false
     }
 
-    private boolean resultStackHasEnvVariable(List<ResultStackEntry> resultStackList, variableName) {
-        if (ResultStackProcessor.instance.getResultStackListHavingEnvVariable(resultStackList, variableName).size() > 0) {
+    private boolean resultStackHasEnvVariable(List<ResultStackEntry> invocationStack, variableName) {
+        if (ResultStackProcessor.instance.getInvocationStackHavingEnvVariable(invocationStack, variableName).size() > 0) {
             return true
         }
         return false
