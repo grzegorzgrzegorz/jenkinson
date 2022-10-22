@@ -13,16 +13,16 @@ class ResultStackValidator {
     }
 
     boolean declarativeItemCallsStepWithParam(String declarativeItem, String stepName, String param) {
-        return resultStackHasStageWithStep(declarativeItem, stepName, param)
+        return resultStackHasDeclarativeItemWithStep(declarativeItem, stepName, param)
     }
 
-    private boolean resultStackHasStageWithStep(String declarativeItem, String stepName, String param) {
-        List<ResultStackEntry> invocationStackRelatedToStage = ResultStackProcessor.instance.getInvocationStackHavingDeclarativeItem(declarativeItem)
-        if (invocationStackRelatedToStage.size() > 0) {
+    private boolean resultStackHasDeclarativeItemWithStep(String declarativeItem, String stepName, String param) {
+        List<ResultStackEntry> invocationStackRelatedToDeclarativeItem = ResultStackProcessor.instance.getInvocationStackHavingDeclarativeItem(declarativeItem)
+        if (invocationStackRelatedToDeclarativeItem.size() > 0) {
             if (param) {
-                return resultStackHasStepWithParam(invocationStackRelatedToStage, stepName, param)
+                return resultStackHasStepWithParam(invocationStackRelatedToDeclarativeItem, stepName, param)
             } else {
-                return resultStackHasStep(invocationStackRelatedToStage, stepName)
+                return resultStackHasStep(invocationStackRelatedToDeclarativeItem, stepName)
             }
         }
         return false
@@ -47,9 +47,9 @@ class ResultStackValidator {
     }
 
     private boolean resultStackHasDeclarativeItemWithEnvVariable(String declarativeItem, String variableName) {
-         List<ResultStackEntry> invocationStackRelatedToStage = ResultStackProcessor.instance.getInvocationStackHavingDeclarativeItem(declarativeItem)
-         if (invocationStackRelatedToStage.size() > 0) {
-            return resultStackHasEnvVariable(invocationStackRelatedToStage, variableName)
+         List<ResultStackEntry> invocationStackRelatedToDeclarativeItem = ResultStackProcessor.instance.getInvocationStackHavingDeclarativeItem(declarativeItem)
+         if (invocationStackRelatedToDeclarativeItem.size() > 0) {
+            return resultStackHasEnvVariable(invocationStackRelatedToDeclarativeItem, variableName)
         }
         return false
     }
