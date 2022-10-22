@@ -1,3 +1,5 @@
+package resultStack
+
 import com.passfailerror.resultStack.ResultStack
 import com.passfailerror.resultStack.ResultStackEntry
 import com.passfailerror.resultStack.ResultStackProcessor

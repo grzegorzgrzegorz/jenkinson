@@ -1,3 +1,5 @@
+package resultStack
+
 import com.passfailerror.resultStack.ResultStackProcessor
 import com.passfailerror.resultStack.ResultStackValidator
 import com.passfailerror.syntax.Sections

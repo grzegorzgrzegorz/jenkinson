@@ -1,3 +1,5 @@
+package acceptance
+
 import com.passfailerror.Jenkinson
 import com.passfailerror.assertion.Assertion
 import groovy.test.GroovyTestCase
