@@ -37,7 +37,7 @@ class testResultStackProcessor extends GroovyTestCase {
         //THEN
         assert getLastItemOfInvocationStack().getInvocations() instanceof Map
         assert getLastItemOfInvocationStack().getInvocations().containsKey("echo")
-        assert getLastItemOfInvocationStack().getInvocations().get("echo") instanceof Object[]
+        assert getLastItemOfInvocationStack().getInvocations().get("echo") instanceof List
         assert getLastItemOfInvocationStack().getInvocations().get("echo")[0] == "testing"
     }
 
