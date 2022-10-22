@@ -3,6 +3,15 @@ package com.passfailerror.resultStack
 @Singleton
 class ResultStackValidator {
 
+    boolean itemIsCalled(String item, String param){
+        List<ResultStackEntry> invocationStack = ResultStack.instance.getInvocationStack()
+        if (param) {
+            return resultStackHasStepWithParam(invocationStack, item, param)
+        } else {
+            return resultStackHasStep(invocationStack, item)
+        }
+    }
+
     boolean declarativeItemCallsStepWithParam(String declarativeItem, String stepName, String param) {
         return resultStackHasStageWithStep(declarativeItem, stepName, param)
     }

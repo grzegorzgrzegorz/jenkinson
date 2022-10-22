@@ -1,7 +1,7 @@
 package acceptance
 
 import com.passfailerror.Jenkinson
-import com.passfailerror.assertion.Assertion
+import com.passfailerror.assertion.DeclarativeAssertion
 import groovy.test.GroovyTestCase
 
 class testStageAssertions extends GroovyTestCase {
@@ -18,26 +18,26 @@ class testStageAssertions extends GroovyTestCase {
 
 
     void test_stepWasCalled() {
-        assert Assertion.stage("First stage").calls("sh")
+        assert DeclarativeAssertion.stage("First stage").calls("sh")
     }
 
     void test_unexistingStepWasNotCalled() {
-        assert Assertion.stage("First stage").calls("unexisting") == false
+        assert DeclarativeAssertion.stage("First stage").calls("unexisting") == false
     }
 
     void test_stageHasEnvVariable_setInside() {
-        assert Assertion.stage("First stage").hasEnvVariable("TEST_GLOBAL_VAR")
+        assert DeclarativeAssertion.stage("First stage").hasEnvVariable("TEST_GLOBAL_VAR")
     }
 
     void test_stageDoesntHave_unexistingEnvVariable() {
-        assert Assertion.stage("First stage").hasEnvVariable("unexisting") == false
+        assert DeclarativeAssertion.stage("First stage").hasEnvVariable("unexisting") == false
     }
 
     void test_stageDoesntHaveEnvVariable_setInConsecutiveStep() {
-        assert Assertion.stage("First stage").hasEnvVariable("SECOND_STAGE_VAR") == false
+        assert DeclarativeAssertion.stage("First stage").hasEnvVariable("SECOND_STAGE_VAR") == false
     }
 
     void test_stageHasEnvVariable_setInPreviousStep() {
-        assert Assertion.stage("Second stage").hasEnvVariable("TEST_GLOBAL_VAR")
+        assert DeclarativeAssertion.stage("Second stage").hasEnvVariable("TEST_GLOBAL_VAR")
     }
 }
