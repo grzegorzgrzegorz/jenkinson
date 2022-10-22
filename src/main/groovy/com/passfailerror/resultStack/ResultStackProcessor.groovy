@@ -1,5 +1,7 @@
 package com.passfailerror.resultStack
 
+import com.passfailerror.Utils
+
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -27,7 +29,7 @@ class ResultStackProcessor {
     void storeInvocation(String syntaxItem, Object[] parameters, LinkedHashMap<String, LinkedHashMap<String, String>> runtimeVariables) {
         String fileContentBasedCallStack = createStackLine()
         LinkedHashMap<Object, Object> syntaxItemInvocation = [:]
-        syntaxItemInvocation.put(syntaxItem, parameters)
+        syntaxItemInvocation.put(syntaxItem, parameters.toList())
         ResultStack.instance.getInvocationStack().add(new ResultStackEntry(fileContentBasedCallStack, syntaxItemInvocation, getDeepCopy(runtimeVariables)))
     }
 
@@ -65,17 +67,9 @@ class ResultStackProcessor {
         return result
     }
 
-    boolean mapContainsValue(Map map, String valueParam) {
-        return map.entrySet().stream().filter(entry -> listContainsValue(entry.value.toList(), valueParam)).findAny().isPresent()
-    }
-
-    boolean listContainsValue(List<String> list, String value) {
-        return list.stream().filter(item -> item.contains(value)).findAny().isPresent()
-    }
-
     List<ResultStackEntry> getResultStackListHavingStepWithParam(List<ResultStackEntry> resultStackList, String stepName, String param) {
         return getResultStackListHavingStep(resultStackList, stepName).
-                findAll(resultStackEntry -> mapContainsValue(resultStackEntry.invocations, param))
+                findAll(resultStackEntry -> Utils.instance.mapContainsValue(resultStackEntry.invocations, param))
     }
 
     List<ResultStackEntry> getResultStackListHavingStep(List<ResultStackEntry> resultStackList, String stepName) {
