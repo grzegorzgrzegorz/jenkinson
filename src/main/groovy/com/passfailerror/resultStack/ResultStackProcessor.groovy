@@ -28,7 +28,7 @@ class ResultStackProcessor {
 
     void storeInvocation(String syntaxItem, Object[] parameters, LinkedHashMap<String, LinkedHashMap<String, String>> runtimeVariables) {
         String fileContentBasedCallStack = createStackLine()
-        LinkedHashMap<Object, Object> syntaxItemInvocation = [:]
+        LinkedHashMap<String, List<Object>> syntaxItemInvocation = [:]
         syntaxItemInvocation.put(syntaxItem, parameters.toList())
         ResultStack.instance.getInvocationStack().add(new ResultStackEntry(fileContentBasedCallStack, syntaxItemInvocation, getDeepCopy(runtimeVariables)))
     }
