@@ -8,14 +8,18 @@ class Assertion {
         return new Assertion(stageName)
     }
 
-    String stageName;
+    String stageName
 
-    public Assertion(String stageName){
+    Assertion(String stageName){
         this.stageName = stageName
     }
 
     boolean calls(String stepName){
-        return ResultStackValidator.instance.stageCallsStep(stageName, stepName)
+        return calls(stepName, null)
+    }
+
+    boolean calls(String stepName, String param){
+        return ResultStackValidator.instance.stageCallsStepWithParam(stageName, stepName, param)
     }
 
     boolean hasEnvVariable(String variableName){

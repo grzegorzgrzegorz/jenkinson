@@ -3,10 +3,6 @@ package com.passfailerror.resultStack
 @Singleton
 class ResultStackValidator {
 
-    boolean stageCallsStep(String stageName, String stepName) {
-        return stageCallsStepWithParam(stageName, stepName, null)
-    }
-
     boolean stageCallsStepWithParam(String stageName, String stepName, String param) {
         return resultStackHasStageWithStep(stageName, stepName, param)
     }
