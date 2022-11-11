@@ -9,7 +9,7 @@ import java.nio.file.Path
 import java.nio.file.Paths
 
 @Slf4j
-public class Jenkinson {
+class Jenkinson {
 
     Script pipelineScript
     Sections sections = new Sections()
