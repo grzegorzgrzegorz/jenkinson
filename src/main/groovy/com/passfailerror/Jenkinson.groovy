@@ -35,6 +35,14 @@ public class Jenkinson {
         pipelineScript.run()
     }
 
+    def runMethod(String methodName){
+        runMethod(methodName, null)
+    }
+
+    def runMethod(String methodName, Object args) {
+        pipelineScript.invokeMethod(methodName, args)
+    }
+
     def mockJenkins(pipelineScript) {
         steps.mock(pipelineScript)
         sections.mock(pipelineScript)
