@@ -5,32 +5,32 @@ import com.passfailerror.Utils
 import java.nio.file.Files
 import java.nio.file.Path
 
-@Singleton
+
 class ResultStackProcessor {
 
     static defaultName = "Script1.groovy"
     File pipelineFile
     List<String> content
+    ResultStack resultStack = new ResultStack()
 
-    // when running Jenkinson multiple times, ResultStack.instance is the same one and without resetting it accumulates content
-
-    void initializeFromPath(Path pipelinePath) {
-        setPipelineFile(pipelinePath.toFile())
-        setContent(Files.readAllLines(pipelinePath))
-        ResultStack.instance.reset()
+    static ResultStackProcessor getInstanceFromPath(Path pipelinePath) {
+        return new ResultStackProcessor(pipelinePath.toFile(), Files.readAllLines(pipelinePath))
     }
 
-    void initializeFromContent(List<String> contentList) {
-        setPipelineFile(new File(defaultName))
-        setContent(contentList)
-        ResultStack.instance.reset()
+    static ResultStackProcessor getInstanceFromContent(List<String> contentList) {
+        return new ResultStackProcessor(new File(defaultName), contentList)
+    }
+
+    private ResultStackProcessor(File file, List<String> content) {
+        this.pipelineFile = file
+        this.content = content
     }
 
     void storeInvocation(String syntaxItem, Object[] parameters, LinkedHashMap<String, LinkedHashMap<String, String>> runtimeVariables) {
         String fileContentBasedCallStack = createStackLine()
         LinkedHashMap<String, List<Object>> syntaxItemInvocation = [:]
         syntaxItemInvocation.put(syntaxItem, parameters.toList())
-        ResultStack.instance.getInvocationStack().add(new ResultStackEntry(fileContentBasedCallStack, syntaxItemInvocation, getDeepCopy(runtimeVariables)))
+        resultStack.getInvocationStack().add(new ResultStackEntry(fileContentBasedCallStack, syntaxItemInvocation, getDeepCopy(runtimeVariables)))
     }
 
     Map<Object, Object> getDeepCopy(runtimeVariables) {
@@ -78,7 +78,7 @@ class ResultStackProcessor {
     }
 
     List<ResultStackEntry> getInvocationStackHavingDeclarativeItem(String declarativeItem) {
-        return ResultStack.instance.getInvocationStack().findAll(item -> item.fileContentBasedCallStack.contains(declarativeItem))
+        return resultStack.getInvocationStack().findAll(item -> item.fileContentBasedCallStack.contains(declarativeItem))
     }
 
     List<ResultStackEntry> getInvocationStackHavingEnvVariable(List<ResultStackEntry> invocationStack, String variableName) {
@@ -86,4 +86,7 @@ class ResultStackProcessor {
                 .findAll(resultStackEntry -> resultStackEntry.getRuntimeVariables().get("env").containsKey(variableName))
     }
 
+    List<ResultStackEntry> getInvocationStack() {
+        return resultStack.getInvocationStack()
+    }
 }

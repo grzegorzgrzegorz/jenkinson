@@ -1,27 +1,28 @@
 package resultStack
 
-import com.passfailerror.resultStack.ResultStack
+
 import com.passfailerror.resultStack.ResultStackEntry
 import com.passfailerror.resultStack.ResultStackProcessor
 import groovy.test.GroovyTestCase
 
 class testResultStackProcessor extends GroovyTestCase {
 
-    static ResultStackEntry getLastItemOfInvocationStack() {
-        return ResultStack.instance.getInvocationStack().last()
+    ResultStackEntry getLastItemOfInvocationStack() {
+        return resultStackProcessor.getResultStack().getInvocationStack().last()
     }
 
+    ResultStackProcessor resultStackProcessor
     Script scriptObject
 
     void setUp() {
         String scriptContent = 'echo "testing"'
-        ResultStackProcessor.instance.initializeFromContent(scriptContent.tokenize(System.lineSeparator()))
+        resultStackProcessor = ResultStackProcessor.getInstanceFromContent(scriptContent.tokenize(System.lineSeparator()))
         def binding = new Binding()
         binding.setProperty("env", [:])
         GroovyShell shell = new GroovyShell(binding)
         scriptObject = shell.parse(scriptContent)
         scriptObject.metaClass.echo = { Object... params ->
-            ResultStackProcessor.instance.storeInvocation("echo", params, scriptObject.getBinding().getVariables())
+            resultStackProcessor.storeInvocation("echo", params, scriptObject.getBinding().getVariables())
         }
     }
 

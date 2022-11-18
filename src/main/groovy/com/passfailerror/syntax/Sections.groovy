@@ -20,7 +20,7 @@ class Sections extends Syntax {
                     } else {
                         params[0].call() // steps{closure}
                     }
-                    ResultStackProcessor.instance.storeInvocation(currentSection, params, pipelineScript.getBinding().getVariables())
+                    resultStackProcessor.storeInvocation(currentSection, params, pipelineScript.getBinding().getVariables())
                 }
 
         }

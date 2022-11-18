@@ -1,10 +1,12 @@
 package com.passfailerror.resultStack
 
-@Singleton
+
 class ResultStackValidator {
 
-    boolean itemIsCalled(String item, String param){
-        List<ResultStackEntry> invocationStack = ResultStack.instance.getInvocationStack()
+    ResultStackProcessor resultStackProcessor
+
+    boolean itemIsCalled(String item, String param) {
+        List<ResultStackEntry> invocationStack = resultStackProcessor.getInvocationStack()
         if (param) {
             return resultStackHasStepWithParam(invocationStack, item, param)
         } else {
@@ -17,7 +19,7 @@ class ResultStackValidator {
     }
 
     private boolean resultStackHasDeclarativeItemWithStep(String declarativeItem, String stepName, String param) {
-        List<ResultStackEntry> invocationStackRelatedToDeclarativeItem = ResultStackProcessor.instance.getInvocationStackHavingDeclarativeItem(declarativeItem)
+        List<ResultStackEntry> invocationStackRelatedToDeclarativeItem = resultStackProcessor.getInvocationStackHavingDeclarativeItem(declarativeItem)
         if (invocationStackRelatedToDeclarativeItem.size() > 0) {
             if (param) {
                 return resultStackHasStepWithParam(invocationStackRelatedToDeclarativeItem, stepName, param)
@@ -29,14 +31,14 @@ class ResultStackValidator {
     }
 
     private boolean resultStackHasStepWithParam(List<ResultStackEntry> invocationStack, String stepName, String param) {
-        if (ResultStackProcessor.instance.getInvocationStackHavingStepWithParam(invocationStack, stepName, param).size() > 0) {
+        if (resultStackProcessor.getInvocationStackHavingStepWithParam(invocationStack, stepName, param).size() > 0) {
             return true
         }
         return false
     }
 
     private boolean resultStackHasStep(List<ResultStackEntry> invocationStack, String stepName) {
-        if (ResultStackProcessor.instance.getInvocationStackHavingStep(invocationStack, stepName).size() > 0) {
+        if (resultStackProcessor.getInvocationStackHavingStep(invocationStack, stepName).size() > 0) {
             return true
         }
         return false
@@ -47,15 +49,15 @@ class ResultStackValidator {
     }
 
     private boolean resultStackHasDeclarativeItemWithEnvVariable(String declarativeItem, String variableName) {
-         List<ResultStackEntry> invocationStackRelatedToDeclarativeItem = ResultStackProcessor.instance.getInvocationStackHavingDeclarativeItem(declarativeItem)
-         if (invocationStackRelatedToDeclarativeItem.size() > 0) {
+        List<ResultStackEntry> invocationStackRelatedToDeclarativeItem = resultStackProcessor.getInvocationStackHavingDeclarativeItem(declarativeItem)
+        if (invocationStackRelatedToDeclarativeItem.size() > 0) {
             return resultStackHasEnvVariable(invocationStackRelatedToDeclarativeItem, variableName)
         }
         return false
     }
 
     private boolean resultStackHasEnvVariable(List<ResultStackEntry> invocationStack, variableName) {
-        if (ResultStackProcessor.instance.getInvocationStackHavingEnvVariable(invocationStack, variableName).size() > 0) {
+        if (resultStackProcessor.getInvocationStackHavingEnvVariable(invocationStack, variableName).size() > 0) {
             return true
         }
         return false
