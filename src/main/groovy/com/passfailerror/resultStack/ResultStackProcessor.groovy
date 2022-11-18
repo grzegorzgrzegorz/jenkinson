@@ -17,8 +17,12 @@ class ResultStackProcessor {
         return new ResultStackProcessor(pipelinePath.toFile(), Files.readAllLines(pipelinePath))
     }
 
-    static ResultStackProcessor getInstanceFromContent(List<String> contentList) {
+    static ResultStackProcessor getInstanceFromLines(List<String> contentList) {
         return new ResultStackProcessor(new File(defaultName), contentList)
+    }
+
+    static ResultStackProcessor getInstanceFromText(String text) {
+        return ResultStackProcessor.getInstanceFromLines(text.tokenize(System.lineSeparator()))
     }
 
     private ResultStackProcessor(File file, List<String> content) {

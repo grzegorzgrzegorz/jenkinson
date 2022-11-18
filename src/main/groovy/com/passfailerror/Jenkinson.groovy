@@ -14,23 +14,49 @@ import java.nio.file.Paths
 @Slf4j
 class Jenkinson {
 
+    static Jenkinson initializeFromFile(String pipelineFileName) {
+        Path pipelinePath = Paths.get(Jenkinson.class.getClassLoader().getResource(pipelineFileName).toURI())
+        return new Jenkinson(pipelinePath)
+    }
+
+    static Jenkinson initializeFromText(String pipelineText) {
+        return new Jenkinson(pipelineText)
+    }
+
     Script pipelineScript
     ResultStackProcessor resultStackProcessor
     ResultStackValidator resultStackValidator = new ResultStackValidator()
     Sections sections = new Sections()
     Steps steps = new Steps()
 
-    def put(String pipelineFileName) {
-        def pipelinePath = Paths.get(this.class.getClassLoader().getResource(pipelineFileName).toURI())
-        resultStackProcessor = ResultStackProcessor.getInstanceFromPath(pipelinePath)
-        resultStackValidator.setResultStackProcessor(resultStackProcessor)
-        Assertion.setResultStackValidator(resultStackValidator)
-        Syntax.setResultStackProcessor(resultStackProcessor)
-        pipelineScript = getPipelineScript(pipelinePath)
+    Jenkinson(String pipelineText) {
+        resultStackProcessor = ResultStackProcessor.getInstanceFromText(pipelineText)
+        initialize(resultStackProcessor)
+        pipelineScript = getPipelineScriptFromText(pipelineText)
         mockJenkins(pipelineScript)
     }
 
-    Script getPipelineScript(Path pipelinePath) {
+    Jenkinson(Path pipelinePath) {
+        resultStackProcessor = ResultStackProcessor.getInstanceFromPath(pipelinePath)
+        initialize(resultStackProcessor)
+        pipelineScript = getPipelineScriptFromPath(pipelinePath)
+        mockJenkins(pipelineScript)
+    }
+
+    def initialize(ResultStackProcessor resultStackProcessor) {
+        resultStackValidator.setResultStackProcessor(resultStackProcessor)
+        Assertion.setResultStackValidator(resultStackValidator)
+        Syntax.setResultStackProcessor(resultStackProcessor)
+    }
+
+    def getPipelineScriptFromText(String text) {
+        def binding = new Binding()
+        binding.setProperty("env", [:])
+        GroovyShell shell = new GroovyShell(binding)
+        return shell.parse(text)
+    }
+
+    Script getPipelineScriptFromPath(Path pipelinePath) {
         def pipelineFile = pipelinePath.toFile()
         def binding = new Binding()
         binding.setProperty("env", [:])

@@ -4,7 +4,7 @@ import com.passfailerror.resultStack.ResultStackProcessor
 
 class Syntax {
 
-    ResultStackProcessor resultStackProcessor
+    static ResultStackProcessor resultStackProcessor
 
     def mock(pipelineScript) {}
 
