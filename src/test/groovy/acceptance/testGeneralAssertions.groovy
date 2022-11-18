@@ -11,8 +11,7 @@ class testGeneralAssertions extends GroovyTestCase {
 
     void setUp() {
         if (jenkinson == null) {
-            jenkinson = new Jenkinson()
-            jenkinson.put("simplePipeline.groovy")
+            jenkinson = Jenkinson.initializeFromFile("simplePipeline.groovy")
             jenkinson.run()
         }
     }

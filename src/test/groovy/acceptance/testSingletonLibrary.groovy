@@ -11,8 +11,7 @@ class testSingletonLibrary extends GroovyTestCase {
 
     void setUp() {
         if (jenkinson == null) {
-            jenkinson = new Jenkinson()
-            jenkinson.put("singletonLibrary.groovy")
+            jenkinson = Jenkinson.initializeFromFile("singletonLibrary.groovy")
             jenkinson.runMethod("call")
         }
     }

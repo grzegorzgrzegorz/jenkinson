@@ -1,35 +1,19 @@
 package resultStack
 
-import com.passfailerror.resultStack.ResultStackProcessor
-import com.passfailerror.resultStack.ResultStackValidator
-import com.passfailerror.syntax.Sections
-import com.passfailerror.syntax.Steps
+import com.passfailerror.Jenkinson
 import groovy.test.GroovyTestCase
 
 class testResultStackValidator extends GroovyTestCase {
 
-    Script getScriptObject(String scriptContent) {
-        def resultStackProcessor = ResultStackProcessor.getInstanceFromContent(scriptContent.tokenize(System.lineSeparator()))
-        resultStackValidator = new ResultStackValidator().setResultStackProcessor(resultStackProcessor)
-        def binding = new Binding()
-        binding.setProperty("env", [:])
-        GroovyShell shell = new GroovyShell(binding)
-        def scriptObject = shell.parse(scriptContent)
-        new Steps().mock(scriptObject)
-        new Sections().mock(scriptObject)
-        return scriptObject
-    }
-
-    def resultStackValidator
 
     void testUnexistingStageAssertion_returnsFalse_evenWhenStepExists() {
         //GIVEN
         String scriptContent = 'echo "testing"'
-        def scriptObject = getScriptObject(scriptContent)
+        def jenkinson = Jenkinson.initializeFromText(scriptContent)
         //WHEN
-        scriptObject.run()
+        jenkinson.run()
         //THEN
-        assert resultStackValidator.declarativeItemCallsStepWithParam("unexisting stage", "echo", null) == false
+        assert jenkinson.getResultStackValidator().declarativeItemCallsStepWithParam("unexisting stage", "echo", null) == false
     }
 
     void testExistingStageAssertion_returnsTrue_onExistingStep() {
@@ -39,11 +23,11 @@ class testResultStackValidator extends GroovyTestCase {
                 echo "testing"
             }
             '''
-        def scriptObject = getScriptObject(scriptContent)
+        def jenkinson = Jenkinson.initializeFromText(scriptContent)
         //WHEN
-        scriptObject.run()
+        jenkinson.run()
         //THEN
-        assert resultStackValidator.declarativeItemCallsStepWithParam("test", "echo", null)
+        assert jenkinson.getResultStackValidator().declarativeItemCallsStepWithParam("test", "echo", null)
     }
 
     void testExistingStageAssertion_returnsTrue_onExistingStepWithParam() {
@@ -53,11 +37,11 @@ class testResultStackValidator extends GroovyTestCase {
                 echo "testing"
             }
             '''
-        def scriptObject = getScriptObject(scriptContent)
+        def jenkinson = Jenkinson.initializeFromText(scriptContent)
         //WHEN
-        scriptObject.run()
+        jenkinson.run()
         //THEN
-        assert resultStackValidator.declarativeItemCallsStepWithParam("test", "echo", "testing")
+        assert jenkinson.getResultStackValidator().declarativeItemCallsStepWithParam("test", "echo", "testing")
     }
 
     void testExistingStageAssertion_returnsFalse_onExistingStepWithUnexistingParam() {
@@ -67,11 +51,11 @@ class testResultStackValidator extends GroovyTestCase {
                 echo "testing"
             }
             '''
-        def scriptObject = getScriptObject(scriptContent)
+        def jenkinson = Jenkinson.initializeFromText(scriptContent)
         //WHEN
-        scriptObject.run()
+        jenkinson.run()
         //THEN
-        assert resultStackValidator.declarativeItemCallsStepWithParam("test", "echo", "testing2") == false
+        assert jenkinson.getResultStackValidator().declarativeItemCallsStepWithParam("test", "echo", "testing2") == false
     }
 
     void testExistingStageAssertion_returnsFalse_onUnexistingStepWithExistingParam() {
@@ -81,11 +65,11 @@ class testResultStackValidator extends GroovyTestCase {
                 echo "testing"
             }
             '''
-        def scriptObject = getScriptObject(scriptContent)
+        def jenkinson = Jenkinson.initializeFromText(scriptContent)
         //WHEN
-        scriptObject.run()
+        jenkinson.run()
         //THEN
-        assert resultStackValidator.declarativeItemCallsStepWithParam("test", "echo2", "testing") == false
+        assert jenkinson.getResultStackValidator().declarativeItemCallsStepWithParam("test", "echo2", "testing") == false
     }
 
     void testExistingStageAssertion_returnsFalse_onUnexistingStep() {
@@ -95,11 +79,11 @@ class testResultStackValidator extends GroovyTestCase {
                 echo "testing"
             }
             '''
-        def scriptObject = getScriptObject(scriptContent)
+        def jenkinson = Jenkinson.initializeFromText(scriptContent)
         //WHEN
-        scriptObject.run()
+        jenkinson.run()
         //THEN
-        assert resultStackValidator.declarativeItemCallsStepWithParam("test", "unexisitingStep", null) == false
+        assert jenkinson.getResultStackValidator().declarativeItemCallsStepWithParam("test", "unexisitingStep", null) == false
     }
 
     void testUnexistingStageAssertion_returnsFalse_onExistingEnvVariable() {
@@ -110,11 +94,11 @@ class testResultStackValidator extends GroovyTestCase {
                 env.TEST1="value"
             }
             '''
-        def scriptObject = getScriptObject(scriptContent)
+        def jenkinson = Jenkinson.initializeFromText(scriptContent)
         //WHEN
-        scriptObject.run()
+        jenkinson.run()
         //THEN
-        assert resultStackValidator.declarativeItemHasEnvVariable("unexisting", "TEST1") == false
+        assert jenkinson.getResultStackValidator().declarativeItemHasEnvVariable("unexisting", "TEST1") == false
     }
 
     void testExistingStageAssertion_returnsFalse_onUnexistingEnvVariable() {
@@ -125,11 +109,11 @@ class testResultStackValidator extends GroovyTestCase {
                 env.TEST1="value"
             }
             '''
-        def scriptObject = getScriptObject(scriptContent)
+        def jenkinson = Jenkinson.initializeFromText(scriptContent)
         //WHEN
-        scriptObject.run()
+        jenkinson.run()
         //THEN
-        assert resultStackValidator.declarativeItemHasEnvVariable("test", "unexistingVariable") == false
+        assert jenkinson.getResultStackValidator().declarativeItemHasEnvVariable("test", "unexistingVariable") == false
     }
 
     void testExistingStageAssertion_returnsTrue_onExistingEnvVariable() {
@@ -140,10 +124,10 @@ class testResultStackValidator extends GroovyTestCase {
                 env.TEST1="value"
             }
             '''
-        def scriptObject = getScriptObject(scriptContent)
+        def jenkinson = Jenkinson.initializeFromText(scriptContent)
         //WHEN
-        scriptObject.run()
+        jenkinson.run()
         //THEN
-        assert resultStackValidator.declarativeItemHasEnvVariable("test", "TEST1")
+        assert jenkinson.getResultStackValidator().declarativeItemHasEnvVariable("test", "TEST1")
     }
 }

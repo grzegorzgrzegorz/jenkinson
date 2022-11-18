@@ -1,34 +1,26 @@
 package resultStack
 
-
+import com.passfailerror.Jenkinson
 import com.passfailerror.resultStack.ResultStackEntry
-import com.passfailerror.resultStack.ResultStackProcessor
 import groovy.test.GroovyTestCase
 
 class testResultStackProcessor extends GroovyTestCase {
 
     ResultStackEntry getLastItemOfInvocationStack() {
-        return resultStackProcessor.getResultStack().getInvocationStack().last()
+        return jenkinson.getResultStackProcessor().getResultStack().getInvocationStack().last()
     }
 
-    ResultStackProcessor resultStackProcessor
-    Script scriptObject
+    def jenkinson
 
     void setUp() {
         String scriptContent = 'echo "testing"'
-        resultStackProcessor = ResultStackProcessor.getInstanceFromContent(scriptContent.tokenize(System.lineSeparator()))
-        def binding = new Binding()
-        binding.setProperty("env", [:])
-        GroovyShell shell = new GroovyShell(binding)
-        scriptObject = shell.parse(scriptContent)
-        scriptObject.metaClass.echo = { Object... params ->
-            resultStackProcessor.storeInvocation("echo", params, scriptObject.getBinding().getVariables())
-        }
+        jenkinson = Jenkinson.initializeFromText(scriptContent)
+        jenkinson.run()
     }
 
     void testContentBasedCallStackPart_isString_andContainsExecutedLine() {
         //WHEN
-        scriptObject.run()
+        jenkinson.run()
         //THEN
         assert getLastItemOfInvocationStack().getFileContentBasedCallStack() instanceof String
         assert getLastItemOfInvocationStack().getFileContentBasedCallStack().contentEquals("echo \"testing\"")
@@ -36,7 +28,7 @@ class testResultStackProcessor extends GroovyTestCase {
 
     void testInvocationsPart_isMap_andContainsInvokedCommand() {
         //WHEN
-        scriptObject.run()
+        jenkinson.run()
         //THEN
         assert getLastItemOfInvocationStack().getInvocations() instanceof Map
         assert getLastItemOfInvocationStack().getInvocations().containsKey("echo")
@@ -46,7 +38,7 @@ class testResultStackProcessor extends GroovyTestCase {
 
     void testRuntimeVariablesPart_isLinkedHashMap_andUsesMapForEnvValue() {
         //WHEN
-        scriptObject.run()
+        jenkinson.run()
         //THEN
         assert getLastItemOfInvocationStack().getRuntimeVariables() instanceof LinkedHashMap
         assert getLastItemOfInvocationStack().getRuntimeVariables().containsKey("env")
