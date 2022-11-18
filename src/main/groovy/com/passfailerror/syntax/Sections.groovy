@@ -1,8 +1,7 @@
 package com.passfailerror.syntax
 
-import com.passfailerror.resultStack.ResultStackProcessor
-import groovy.util.logging.Slf4j
 
+import groovy.util.logging.Slf4j
 
 @Slf4j
 class Sections extends Syntax {
