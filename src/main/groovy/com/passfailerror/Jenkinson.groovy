@@ -23,6 +23,10 @@ class Jenkinson {
         return new Jenkinson(pipelineText)
     }
 
+    static Jenkinson initialize(){
+        return initializeFromText('')
+    }
+
     Script pipelineScript
     ResultStackProcessor resultStackProcessor
     ResultStackValidator resultStackValidator = new ResultStackValidator()
