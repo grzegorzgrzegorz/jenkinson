@@ -21,7 +21,7 @@ class testStepVariants extends GroovyTestCase{
 
     void test_shStep_isExecuted(){
         //GIVEN
-        jenkinson.mockItem("sh").executeParameter("script")
+        jenkinson.emulateStep("sh").setRealExecutions(["git --version"])
         //WHEN
         jenkinson.run()
         //THEN

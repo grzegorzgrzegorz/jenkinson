@@ -1,8 +1,10 @@
 package com.passfailerror
 
 import com.passfailerror.assertion.Assertion
+import com.passfailerror.dsl.EmulateDsl
 import com.passfailerror.resultStack.ResultStackProcessor
 import com.passfailerror.resultStack.ResultStackValidator
+import com.passfailerror.syntax.EmulableSteps
 import com.passfailerror.syntax.Sections
 import com.passfailerror.syntax.Steps
 import com.passfailerror.syntax.Syntax
@@ -32,6 +34,7 @@ class Jenkinson {
     ResultStackValidator resultStackValidator = new ResultStackValidator()
     Sections sections = new Sections()
     Steps steps = new Steps()
+    EmulableSteps emulableSteps = new EmulableSteps()
 
     Jenkinson(String pipelineText) {
         resultStackProcessor = ResultStackProcessor.getInstanceFromText(pipelineText)
@@ -85,5 +88,8 @@ class Jenkinson {
         sections.mock(pipelineScript)
     }
 
+    EmulateDsl emulateStep(item){
+        return new EmulateDsl(this, EmulableSteps.class, item)
+    }
 
 }
