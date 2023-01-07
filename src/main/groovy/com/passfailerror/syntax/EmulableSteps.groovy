@@ -4,7 +4,7 @@ package com.passfailerror.syntax
 import groovy.util.logging.Slf4j
 
 @Slf4j
-class EmulableSteps extends Steps {
+class EmulableSteps extends EmulableToken {
 
     def addRealExecutions(step, commandList) {
         commandList.each { command ->

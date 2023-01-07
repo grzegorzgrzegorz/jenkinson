@@ -6,14 +6,6 @@ class Token {
 
     static ResultStackProcessor resultStackProcessor
 
-    def realExecutionMap = [:]
-
     def mock(pipelineScript) {}
 
-    def shouldBeExecuted(item, command) {
-        if (realExecutionMap.containsKey(item) && realExecutionMap[item].contains(command)) {
-            return true
-        }
-        return false
-    }
 }
