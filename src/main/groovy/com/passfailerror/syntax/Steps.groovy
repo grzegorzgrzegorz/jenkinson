@@ -4,7 +4,7 @@ package com.passfailerror.syntax
 import groovy.util.logging.Slf4j
 
 @Slf4j
-class Steps extends Syntax {
+class Steps extends Token {
 
     def steps = ["label", "echo", "sh"]
 

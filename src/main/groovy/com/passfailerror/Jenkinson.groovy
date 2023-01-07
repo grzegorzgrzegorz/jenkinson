@@ -7,7 +7,7 @@ import com.passfailerror.resultStack.ResultStackValidator
 import com.passfailerror.syntax.EmulableSteps
 import com.passfailerror.syntax.Sections
 import com.passfailerror.syntax.Steps
-import com.passfailerror.syntax.Syntax
+import com.passfailerror.syntax.Token
 import groovy.util.logging.Slf4j
 
 import java.nio.file.Path
@@ -53,7 +53,7 @@ class Jenkinson {
     def initialize(ResultStackProcessor resultStackProcessor) {
         resultStackValidator.setResultStackProcessor(resultStackProcessor)
         Assertion.setResultStackValidator(resultStackValidator)
-        Syntax.setResultStackProcessor(resultStackProcessor)
+        Token.setResultStackProcessor(resultStackProcessor)
     }
 
     def getPipelineScriptFromText(String text) {

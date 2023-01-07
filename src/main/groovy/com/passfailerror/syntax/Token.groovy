@@ -2,7 +2,7 @@ package com.passfailerror.syntax
 
 import com.passfailerror.resultStack.ResultStackProcessor
 
-class Syntax {
+class Token {
 
     static ResultStackProcessor resultStackProcessor
 
