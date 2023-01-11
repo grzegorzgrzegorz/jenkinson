@@ -7,6 +7,7 @@ class EmulateDsl {
     def jenkinson
     def itemClass
     def item
+    def paramNameList
 
     EmulateDsl(jenkinson, itemClass, item) {
         this.jenkinson = jenkinson
@@ -14,7 +15,12 @@ class EmulateDsl {
         this.item = item
     }
 
-    void setRealExecutions(paramNameList) {
+    EmulateDsl parameters(paramNameList) {
+        this.paramNameList = paramNameList
+        return this
+    }
+
+    void setRealExecution(){
         if (itemClass == EmulableSteps.class) {
             def emulableSteps = jenkinson.getEmulableSteps()
             emulableSteps.addRealExecutions(item, paramNameList)
