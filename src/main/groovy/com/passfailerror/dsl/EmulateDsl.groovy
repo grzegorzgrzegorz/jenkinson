@@ -18,7 +18,6 @@ class EmulateDsl {
         if (itemClass == EmulableSteps.class) {
             def emulableSteps = jenkinson.getEmulableSteps()
             emulableSteps.addRealExecutions(item, paramNameList)
-            emulableSteps.mock(jenkinson.getPipelineScript())
         } else {
             throw new RuntimeException("unsupported itemClass: " + itemClass.toString())
         }

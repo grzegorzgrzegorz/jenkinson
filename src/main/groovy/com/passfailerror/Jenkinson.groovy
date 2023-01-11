@@ -88,6 +88,7 @@ class Jenkinson {
     def mockJenkins(pipelineScript) {
         steps.mock(pipelineScript)
         sections.mock(pipelineScript)
+        emulableSteps.mock(pipelineScript)
     }
 
     EmulateDsl emulateStep(item){
