@@ -41,14 +41,12 @@ class Jenkinson {
         resultStackProcessor = ResultStackProcessor.getInstanceFromText(pipelineText)
         initialize(resultStackProcessor)
         pipelineScript = getPipelineScriptFromText(pipelineText)
-        mockJenkins(pipelineScript)
     }
 
     Jenkinson(Path pipelinePath) {
         resultStackProcessor = ResultStackProcessor.getInstanceFromPath(pipelinePath)
         initialize(resultStackProcessor)
         pipelineScript = getPipelineScriptFromPath(pipelinePath)
-        mockJenkins(pipelineScript)
     }
 
     def initialize(ResultStackProcessor resultStackProcessor) {
@@ -74,6 +72,7 @@ class Jenkinson {
     }
 
     def run() {
+        mockJenkins(pipelineScript)
         pipelineScript.run()
     }
 
