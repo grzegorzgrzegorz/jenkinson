@@ -6,12 +6,29 @@ class EmulableToken {
 
     static ResultStackProcessor resultStackProcessor
 
-    def realExecutionMap = [:]
+    Map<String,List<String>> tokenParamValueMap = [:]
+
+    List<String> realExecutionList = []
+    Map<String,Class> emulatorMap = [:]
 
     def mock(pipelineScript) {}
 
-    def shouldBeExecuted(item, command) {
-        if (realExecutionMap.containsKey(item) && realExecutionMap[item].contains(command)) {
+    def shouldBeExecuted(token, command) {
+        if (tokenMapContains(tokenParamValueMap, token, command) && token in realExecutionList) {
+            return true
+        }
+        return false
+    }
+
+    def shouldBeEmulated(token, command) {
+        if (tokenMapContains(tokenParamValueMap, token, command) && emulatorMap.containsKey(token)) {
+            return true
+        }
+        return false
+    }
+
+    def tokenMapContains(map, token, command){
+        if (map.containsKey(token) && command.contains(map[token])) {
             return true
         }
         return false

@@ -8,25 +8,30 @@ class EmulateDsl {
     def itemClass
     def item
     def paramNameList
+    EmulableSteps emulableSteps
 
     EmulateDsl(jenkinson, itemClass, item) {
         this.jenkinson = jenkinson
+        this.emulableSteps = jenkinson.getEmulableSteps()
+        if (itemClass != EmulableSteps.class) {
+            throw new RuntimeException("unsupported itemClass: " + itemClass.toString())
+        }
         this.itemClass = itemClass
         this.item = item
     }
 
     EmulateDsl parameters(paramNameList) {
         this.paramNameList = paramNameList
+        emulableSteps.getTokenParamValueMap().put(item, paramNameList)
         return this
     }
 
     void setRealExecution(){
-        if (itemClass == EmulableSteps.class) {
-            def emulableSteps = jenkinson.getEmulableSteps()
-            emulableSteps.addRealExecutions(item, paramNameList)
-        } else {
-            throw new RuntimeException("unsupported itemClass: " + itemClass.toString())
-        }
+        emulableSteps.getRealExecutionList().add(item)
+    }
+
+    void setEmulator(emulatorClass){
+        emulableSteps.getEmulatorMap().put(item, emulatorClass)
     }
 
 }

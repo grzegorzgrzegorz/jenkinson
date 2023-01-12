@@ -6,15 +6,36 @@ import groovy.util.logging.Slf4j
 @Slf4j
 class EmulableSteps extends EmulableToken {
 
-    def addRealExecutions(step, commandList) {
-        commandList.each { command ->
-            realExecutionMap.put(step, command)
+    def mock(pipelineScript) {
+        mockRealExecutions(pipelineScript)
+        mockEmulators(pipelineScript)
+    }
+
+    def mockEmulators(pipelineScript) {
+        emulatorMap.each { entry ->
+            def currentStep = entry.key
+            pipelineScript.metaClass."$currentStep" = { Object... params ->
+                log.info(currentStep + " " + params[0].toString())
+                def actualCommand
+                def commandOutput
+                if (params[0] instanceof Map) {
+                    actualCommand = params[0]["script"]
+                } else {
+                    actualCommand = params[0]
+                }
+                if (shouldBeEmulated(currentStep, actualCommand)) {
+                    def emulator = emulatorMap[currentStep]
+                    commandOutput = emulator.run(params)
+                }
+                resultStackProcessor.storeInvocation(currentStep, params, pipelineScript.getBinding().getVariables())
+                return commandOutput
+            }
         }
     }
 
-    def mock(pipelineScript) {
-        realExecutionMap.each { entry ->
-            def currentStep = entry.key
+    def mockRealExecutions(pipelineScript) {
+        realExecutionList.each { token ->
+            def currentStep = token
             pipelineScript.metaClass."$currentStep" = { Object... params ->
                 log.info(currentStep + " " + params[0].toString())
                 def actualCommand
@@ -61,11 +82,10 @@ class EmulableSteps extends EmulableToken {
         return new ProcessBuilder(params).start()
     }
 
-    def getOsBasedExecutionPrefix(){
-        if (System.getProperty("os.name").contains("Windows")){
+    def getOsBasedExecutionPrefix() {
+        if (System.getProperty("os.name").contains("Windows")) {
             return ["cmd.exe", "/c"]
-        }
-        else{
+        } else {
             return ["bash", "-c"]
         }
     }

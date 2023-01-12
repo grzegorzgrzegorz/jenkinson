@@ -20,7 +20,7 @@ pipeline {
         stage('Third stage') {
             steps {
                 echo 'Third - we need to mimic computation basing on some input parameters and so we execute custom code instead of script'
-                def resultBasingOnCustomCode = sh(script: "complicatedAppWhichComputesResultInProduction ${env.WORKSPACE}", returnStdout: true)
+                def resultBasingOnCustomCode = sh(script: "complicatedAppWhichComputesResultInProduction inputData", returnStdout: true)
                 echo 'resultBasingOnCustomCode:'+resultBasingOnCustomCode
             }
         }
