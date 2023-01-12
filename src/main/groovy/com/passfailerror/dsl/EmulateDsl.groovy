@@ -34,4 +34,8 @@ class EmulateDsl {
         emulableSteps.getEmulatorMap().put(item, emulatorClass)
     }
 
+    void returnValue(value){
+        emulableSteps.getReturnValueMap().put(item, value)
+    }
+
 }

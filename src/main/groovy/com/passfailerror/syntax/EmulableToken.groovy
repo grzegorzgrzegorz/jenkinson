@@ -10,6 +10,7 @@ class EmulableToken {
 
     List<String> realExecutionList = []
     Map<String,Class> emulatorMap = [:]
+    Map<String,String> returnValueMap = [:]
 
     def mock(pipelineScript) {}
 
@@ -22,6 +23,13 @@ class EmulableToken {
 
     def shouldBeEmulated(token, command) {
         if (tokenMapContains(tokenParamValueMap, token, command) && emulatorMap.containsKey(token)) {
+            return true
+        }
+        return false
+    }
+
+    def shouldReturnValue(token, command){
+        if (tokenMapContains(tokenParamValueMap, token, command) && returnValueMap.containsKey(token)) {
             return true
         }
         return false
