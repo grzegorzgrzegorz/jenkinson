@@ -61,4 +61,21 @@ class EmulableToken {
             throw new RuntimeException(e)
         }
     }
+
+
+    def executeCommand(commandParams) {
+        def execPrefix = getOsBasedExecutionPrefix()
+        def params = []
+        params.addAll(execPrefix)
+        params.addAll(commandParams)
+        return new ProcessBuilder(params).start()
+    }
+
+    def getOsBasedExecutionPrefix() {
+        if (System.getProperty("os.name").contains("Windows")) {
+            return ["cmd.exe", "/c"]
+        } else {
+            return ["bash", "-c"]
+        }
+    }
 }
