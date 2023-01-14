@@ -1,6 +1,7 @@
 package com.passfailerror.dsl
 
-import com.passfailerror.syntax.EmulableSteps
+
+import com.passfailerror.syntax.Steps
 
 class EmulateDsl {
 
@@ -8,12 +9,12 @@ class EmulateDsl {
     def itemClass
     def item
     def paramNameList
-    EmulableSteps emulableSteps
+    Steps steps
 
     EmulateDsl(jenkinson, itemClass, item) {
         this.jenkinson = jenkinson
-        this.emulableSteps = jenkinson.getEmulableSteps()
-        if (itemClass != EmulableSteps.class) {
+        this.steps = jenkinson.getSteps()
+        if (itemClass != Steps.class) {
             throw new RuntimeException("unsupported itemClass: " + itemClass.toString())
         }
         this.itemClass = itemClass
@@ -22,20 +23,23 @@ class EmulateDsl {
 
     EmulateDsl parameters(paramNameList) {
         this.paramNameList = paramNameList
-        emulableSteps.getTokenParamValueMap().put(item, paramNameList)
+        steps.getTokenParamValueMap().put(item, paramNameList)
         return this
     }
 
     void setRealExecution() {
-        emulableSteps.getRealExecutionMap().put(item, null)
+        steps.getExecutingToken().getActionMap().put(item, null)
+        steps.getExecutingToken().getTokenParamValueMap().putAll(steps.getTokenParamValueMap())
     }
 
     void setEmulator(emulatorClass) {
-        emulableSteps.getEmulatorMap().put(item, emulatorClass)
+        steps.getEmulatingToken().getActionMap().put(item, emulatorClass)
+        steps.getEmulatingToken().getTokenParamValueMap().putAll(steps.getTokenParamValueMap())
     }
 
     void returnValue(value) {
-        emulableSteps.getReturnValueMap().put(item, value)
+        steps.getReturningValueToken().getActionMap().put(item, value)
+        steps.getReturningValueToken().getTokenParamValueMap().putAll(steps.getTokenParamValueMap())
     }
 
 }
