@@ -2,9 +2,9 @@ package com.passfailerror.syntax
 
 class ReturningValueToken extends EmulableToken{
 
-    def modifyCommandOutput(currentStep, actualCommand) {
+    def modifyCommandOutput(currentStep, actualCommand, params) {
         if (tokenMapContains(tokenParamValueMap, currentStep, actualCommand) && actionMap.containsKey(currentStep)) {
-            return returnValueMap[currentStep]
+            return actionMap[currentStep]
         }
     }
 }

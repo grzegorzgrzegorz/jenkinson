@@ -2,9 +2,7 @@ package com.passfailerror.syntax
 
 class ExecutingToken extends EmulableToken {
 
-    Map<String, String> realExecutionMap = [:]
-
-    def modifyCommandOutput(currentStep, actualCommand) {
+    def modifyCommandOutput(currentStep, actualCommand, params) {
         if (tokenMapContains(tokenParamValueMap, currentStep, actualCommand) && actionMap.containsKey(currentStep)) {
             return execute(actualCommand)
         }
