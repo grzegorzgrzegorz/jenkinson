@@ -26,15 +26,15 @@ class EmulateDsl {
         return this
     }
 
-    void setRealExecution(){
-        emulableSteps.getRealExecutionList().add(item)
+    void setRealExecution() {
+        emulableSteps.getRealExecutionMap().put(item, null)
     }
 
-    void setEmulator(emulatorClass){
+    void setEmulator(emulatorClass) {
         emulableSteps.getEmulatorMap().put(item, emulatorClass)
     }
 
-    void returnValue(value){
+    void returnValue(value) {
         emulableSteps.getReturnValueMap().put(item, value)
     }
 
