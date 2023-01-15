@@ -1,9 +1,12 @@
 package com.passfailerror.syntax
 
+import groovy.util.logging.Slf4j
+
+@Slf4j
 class ExecutingToken extends EmulableToken {
 
     def modifyCommandOutput(currentStep, actualCommand, params) {
-        if (tokenMapContains(tokenParamValueMap, currentStep, actualCommand) && actionMap.containsKey(currentStep)) {
+        if (tokenMapContains(tokenParamValueMap, currentStep, actualCommand)) {
             return execute(actualCommand)
         }
     }

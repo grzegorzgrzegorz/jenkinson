@@ -4,7 +4,9 @@ import com.passfailerror.assertion.Assertion
 import com.passfailerror.dsl.EmulateDsl
 import com.passfailerror.resultStack.ResultStackProcessor
 import com.passfailerror.resultStack.ResultStackValidator
-
+import com.passfailerror.syntax.EmulatingToken
+import com.passfailerror.syntax.ExecutingToken
+import com.passfailerror.syntax.ReturningValueToken
 import com.passfailerror.syntax.Sections
 import com.passfailerror.syntax.Steps
 import com.passfailerror.syntax.Token
@@ -89,7 +91,15 @@ class Jenkinson {
     }
 
     EmulateDsl emulateStep(item){
-        return new EmulateDsl(this, Steps.class, item)
+        return new EmulateDsl(this, Steps.class, item, new EmulatingToken())
+    }
+
+    EmulateDsl executeStep(item){
+        return new EmulateDsl(this, Steps.class, item, new ExecutingToken())
+    }
+
+    EmulateDsl mockStep(item){
+        return new EmulateDsl(this, Steps.class, item,new ReturningValueToken())
     }
 
 }

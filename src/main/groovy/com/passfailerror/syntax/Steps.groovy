@@ -7,17 +7,11 @@ import groovy.util.logging.Slf4j
 class Steps extends Token {
 
     def steps = ["label", "echo", "sh"]
-    Map<String,List<String>> tokenParamValueMap = [:]
-
-    ReturningValueToken returningValueToken = new ReturningValueToken()
-    ExecutingToken executingToken = new ExecutingToken()
-    EmulatingToken emulatingToken = new EmulatingToken()
+    def emulableTokenList = []
 
     def mock(pipelineScript){
         mockFromList(pipelineScript)
-        mockFromMap(pipelineScript, returningValueToken)
-        mockFromMap(pipelineScript, executingToken)
-        mockFromMap(pipelineScript, emulatingToken)
+        emulableTokenList.each{ emulatingToken -> mockFromMap(pipelineScript, emulatingToken)}
     }
 
     def mockFromList(pipelineScript) {

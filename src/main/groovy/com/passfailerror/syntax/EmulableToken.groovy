@@ -18,6 +18,6 @@ class EmulableToken {
         return false
     }
 
-    def modifyCommandOutput(){}
+    def modifyCommandOutput(currentStep, actualCommand, params){}
 
 }

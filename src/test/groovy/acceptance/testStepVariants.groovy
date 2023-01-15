@@ -21,7 +21,7 @@ class testStepVariants extends GroovyTestCase{
 
     void test_shStep_isExecuted(){
         //GIVEN
-        jenkinson.emulateStep("sh").parameters(["git --version"]).setRealExecution()
+        jenkinson.executeStep("sh").parameters(["git --version"])
         //WHEN
         jenkinson.run()
         //THEN
@@ -55,7 +55,7 @@ class testStepVariants extends GroovyTestCase{
 
     void test_step_returnsMockedValue(){
         //GIVEN
-        jenkinson.emulateStep("sh").parameters(["otherApp"]).returnValue("mocked result")
+        jenkinson.mockStep("sh").parameters(["otherApp"]).returnValue("mocked result")
         //WHEN
         jenkinson.run()
         //THEN
