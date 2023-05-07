@@ -22,11 +22,15 @@ class Jenkinson {
 
     static Jenkinson initializeFromFile(String pipelineFileName) {
         Path pipelinePath = Paths.get(Jenkinson.class.getClassLoader().getResource(pipelineFileName).toURI())
-        return new Jenkinson(pipelinePath)
+        def resultStackProcessor = ResultStackProcessor.getInstanceFromPath(pipelinePath)
+        def pipelineScript = new FilePipelineScript(pipelinePath).get()
+        return new Jenkinson(pipelineScript, resultStackProcessor)
     }
 
     static Jenkinson initializeFromText(String pipelineText) {
-        return new Jenkinson(pipelineText)
+        def resultStackProcessor = ResultStackProcessor.getInstanceFromText(pipelineText)
+        def pipelineScript = new TextPipelineScript(pipelineText).get()
+        return new Jenkinson(pipelineScript, resultStackProcessor)
     }
 
     static Jenkinson initialize(){
@@ -40,18 +44,10 @@ class Jenkinson {
     final Steps steps = new Steps()
 
     @NullCheck
-    Jenkinson(String pipelineText) {
-        resultStackProcessor = ResultStackProcessor.getInstanceFromText(pipelineText)
+    Jenkinson(Script pipelineScript, ResultStackProcessor resultStackProcessor) {
+        this.pipelineScript = pipelineScript
+        this.resultStackProcessor = resultStackProcessor
         initialize(resultStackProcessor)
-        pipelineScript = new TextPipelineScript(pipelineText).get()
-        mockJenkinsDefaults(pipelineScript)
-    }
-
-    @NullCheck
-    Jenkinson(Path pipelinePath) {
-        resultStackProcessor = ResultStackProcessor.getInstanceFromPath(pipelinePath)
-        initialize(resultStackProcessor)
-        pipelineScript = new FilePipelineScript(pipelinePath).get()
         mockJenkinsDefaults(pipelineScript)
     }
 
@@ -64,8 +60,6 @@ class Jenkinson {
         ExecutingToken.setResultStackProcessor(resultStackProcessor)
         ReturningValueToken.setResultStackProcessor(resultStackProcessor)
     }
-
-
 
     def run() {
         mockJenkins(pipelineScript)
