@@ -43,7 +43,7 @@ class Jenkinson {
     Jenkinson(String pipelineText) {
         resultStackProcessor = ResultStackProcessor.getInstanceFromText(pipelineText)
         initialize(resultStackProcessor)
-        pipelineScript = getPipelineScriptFromText(pipelineText)
+        pipelineScript = new TextPipelineScript(pipelineText).get()
         mockJenkinsDefaults(pipelineScript)
     }
 
@@ -51,7 +51,7 @@ class Jenkinson {
     Jenkinson(Path pipelinePath) {
         resultStackProcessor = ResultStackProcessor.getInstanceFromPath(pipelinePath)
         initialize(resultStackProcessor)
-        pipelineScript = getPipelineScriptFromPath(pipelinePath)
+        pipelineScript = new FilePipelineScript(pipelinePath).get()
         mockJenkinsDefaults(pipelineScript)
     }
 
@@ -65,20 +65,7 @@ class Jenkinson {
         ReturningValueToken.setResultStackProcessor(resultStackProcessor)
     }
 
-    def getPipelineScriptFromText(String text) {
-        def binding = new Binding()
-        binding.setProperty("env", [:])
-        GroovyShell shell = new GroovyShell(binding)
-        return shell.parse(text)
-    }
 
-    Script getPipelineScriptFromPath(Path pipelinePath) {
-        def pipelineFile = pipelinePath.toFile()
-        def binding = new Binding()
-        binding.setProperty("env", [:])
-        GroovyShell shell = new GroovyShell(binding)
-        return shell.parse(pipelineFile)
-    }
 
     def run() {
         mockJenkins(pipelineScript)
