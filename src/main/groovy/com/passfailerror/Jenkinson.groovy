@@ -1,16 +1,14 @@
 package com.passfailerror
 
-import com.passfailerror.assertion.Assertion
+
+import com.passfailerror.assertion.DeclarativeAssertion
+import com.passfailerror.assertion.GeneralAssertion
 import com.passfailerror.dsl.EmulateDsl
 import com.passfailerror.resultStack.ResultStackProcessor
 import com.passfailerror.resultStack.ResultStackValidator
 import com.passfailerror.script.FilePipelineScript
 import com.passfailerror.script.TextPipelineScript
-import com.passfailerror.syntax.EmulatingToken
-import com.passfailerror.syntax.ExecutingToken
-import com.passfailerror.syntax.ReturningValueToken
-import com.passfailerror.syntax.Sections
-import com.passfailerror.syntax.Steps
+import com.passfailerror.syntax.*
 import groovy.transform.NullCheck
 import groovy.util.logging.Slf4j
 
@@ -33,7 +31,7 @@ class Jenkinson {
         return new Jenkinson(pipelineScript, resultStackProcessor)
     }
 
-    static Jenkinson initialize(){
+    static Jenkinson initialize() {
         return initializeFromText('')
     }
 
@@ -53,7 +51,8 @@ class Jenkinson {
 
     def initialize(ResultStackProcessor resultStackProcessor) {
         resultStackValidator.setResultStackProcessor(resultStackProcessor)
-        Assertion.setResultStackValidator(resultStackValidator)
+        DeclarativeAssertion.setResultStackValidator(resultStackValidator)
+        GeneralAssertion.setResultStackValidator(resultStackValidator)
         Steps.setResultStackProcessor(resultStackProcessor)
         Sections.setResultStackProcessor(resultStackProcessor)
         EmulatingToken.setResultStackProcessor(resultStackProcessor)
@@ -84,16 +83,16 @@ class Jenkinson {
         sections.mockDefaults(pipelineScript)
     }
 
-    EmulateDsl emulateStep(item){
+    EmulateDsl emulateStep(item) {
         return new EmulateDsl(this, Steps.class, item, new EmulatingToken())
     }
 
-    EmulateDsl executeStep(item){
+    EmulateDsl executeStep(item) {
         return new EmulateDsl(this, Steps.class, item, new ExecutingToken())
     }
 
-    EmulateDsl mockStep(item){
-        return new EmulateDsl(this, Steps.class, item,new ReturningValueToken())
+    EmulateDsl mockStep(item) {
+        return new EmulateDsl(this, Steps.class, item, new ReturningValueToken())
     }
 
 }

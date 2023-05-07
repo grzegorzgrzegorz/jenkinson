@@ -1,8 +1,11 @@
 package com.passfailerror.assertion
 
+import com.passfailerror.resultStack.ResultStackValidator
 import groovy.transform.NullCheck
 
-class GeneralAssertion extends Assertion {
+class GeneralAssertion {
+
+    static ResultStackValidator resultStackValidator
 
     static GeneralAssertion step(String stepName) {
         return new GeneralAssertion(stepName)
