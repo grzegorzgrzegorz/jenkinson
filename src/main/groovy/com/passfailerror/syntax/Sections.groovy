@@ -8,13 +8,13 @@ class Sections implements Token {
 
     static ResultStackProcessor resultStackProcessor
 
-    def sections = ["pipeline", "agent", "stages", "stage", "steps"]
+    def defaultSections = ["pipeline", "agent", "stages", "stage", "steps"]
 
     def mock(pipelineScript) {
     }
 
     def mockDefaults(pipelineScript) {
-        sections.each {
+        defaultSections.each {
             section ->
                 def currentSection = section
                 pipelineScript.metaClass."$currentSection" = { Object... params ->

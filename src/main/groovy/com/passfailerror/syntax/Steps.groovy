@@ -8,19 +8,11 @@ class Steps implements Token {
 
     static ResultStackProcessor resultStackProcessor
 
-    def steps = ["label", "echo", "sh"]
+    def defaultSteps = ["label", "echo", "sh"]
     def emulableTokenList = []
 
     def mockDefaults(pipelineScript) {
-        mockFromList(pipelineScript)
-    }
-
-    def mock(pipelineScript) {
-        emulableTokenList.each { emulatingToken -> mockFromMap(pipelineScript, emulatingToken) }
-    }
-
-    def mockFromList(pipelineScript) {
-        steps.each {
+        defaultSteps.each {
             step ->
                 def currentStep = step
                 pipelineScript.metaClass."$currentStep" = { Object... params ->
@@ -28,6 +20,10 @@ class Steps implements Token {
                     resultStackProcessor.storeInvocation(currentStep, params, pipelineScript.getBinding().getVariables())
                 }
         }
+    }
+
+    def mock(pipelineScript) {
+        emulableTokenList.each { emulatingToken -> mockFromMap(pipelineScript, emulatingToken) }
     }
 
     def mockFromMap(pipelineScript, tokenObject) {
