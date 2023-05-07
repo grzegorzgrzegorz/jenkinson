@@ -4,13 +4,13 @@ import com.passfailerror.assertion.Assertion
 import com.passfailerror.dsl.EmulateDsl
 import com.passfailerror.resultStack.ResultStackProcessor
 import com.passfailerror.resultStack.ResultStackValidator
+import com.passfailerror.script.FilePipelineScript
+import com.passfailerror.script.TextPipelineScript
 import com.passfailerror.syntax.EmulatingToken
 import com.passfailerror.syntax.ExecutingToken
 import com.passfailerror.syntax.ReturningValueToken
 import com.passfailerror.syntax.Sections
 import com.passfailerror.syntax.Steps
-import com.passfailerror.syntax.Token
-import com.passfailerror.syntax.EmulableToken
 import groovy.transform.NullCheck
 import groovy.util.logging.Slf4j
 

@@ -1,4 +1,4 @@
-package com.passfailerror
+package com.passfailerror.script
 
 interface PipelineScript {
 
