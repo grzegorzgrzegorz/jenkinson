@@ -42,14 +42,14 @@ class Jenkinson {
         resultStackProcessor = ResultStackProcessor.getInstanceFromText(pipelineText)
         initialize(resultStackProcessor)
         pipelineScript = getPipelineScriptFromText(pipelineText)
-        mockJenkins(pipelineScript)
+        mockJenkinsDefaults(pipelineScript)
     }
 
     Jenkinson(Path pipelinePath) {
         resultStackProcessor = ResultStackProcessor.getInstanceFromPath(pipelinePath)
         initialize(resultStackProcessor)
         pipelineScript = getPipelineScriptFromPath(pipelinePath)
-        mockJenkins(pipelineScript)
+        mockJenkinsDefaults(pipelineScript)
     }
 
     def initialize(ResultStackProcessor resultStackProcessor) {
@@ -90,7 +90,11 @@ class Jenkinson {
 
     def mockJenkins(pipelineScript) {
         steps.mock(pipelineScript)
-        sections.mock(pipelineScript)
+    }
+
+    def mockJenkinsDefaults(pipelineScript) {
+        steps.mockDefaults(pipelineScript)
+        sections.mockDefaults(pipelineScript)
     }
 
     EmulateDsl emulateStep(item){

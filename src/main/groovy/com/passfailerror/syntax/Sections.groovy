@@ -8,7 +8,10 @@ class Sections extends Token {
 
     def sections = ["pipeline", "agent", "stages", "stage", "steps"]
 
-    def mock(pipelineScript) {
+    def mock(pipelineScript){
+    }
+
+    def mockDefaults(pipelineScript) {
         sections.each {
             section ->
                 def currentSection = section

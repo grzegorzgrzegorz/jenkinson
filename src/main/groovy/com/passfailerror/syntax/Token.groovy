@@ -8,4 +8,5 @@ class Token {
 
     def mock(pipelineScript) {}
 
+    def mockDefaults(pipelineScript) {}
 }

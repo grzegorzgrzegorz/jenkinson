@@ -9,8 +9,11 @@ class Steps extends Token {
     def steps = ["label", "echo", "sh"]
     def emulableTokenList = []
 
-    def mock(pipelineScript){
+    def mockDefaults(pipelineScript){
         mockFromList(pipelineScript)
+    }
+
+    def mock(pipelineScript){
         emulableTokenList.each{ emulatingToken -> mockFromMap(pipelineScript, emulatingToken)}
     }
 
