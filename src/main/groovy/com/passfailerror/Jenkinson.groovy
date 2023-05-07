@@ -60,7 +60,9 @@ class Jenkinson {
         Assertion.setResultStackValidator(resultStackValidator)
         Steps.setResultStackProcessor(resultStackProcessor)
         Sections.setResultStackProcessor(resultStackProcessor)
-        EmulableToken.setResultStackProcessor(resultStackProcessor)
+        EmulatingToken.setResultStackProcessor(resultStackProcessor)
+        ExecutingToken.setResultStackProcessor(resultStackProcessor)
+        ReturningValueToken.setResultStackProcessor(resultStackProcessor)
     }
 
     def getPipelineScriptFromText(String text) {
