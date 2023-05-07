@@ -1,12 +1,8 @@
 package com.passfailerror.syntax
 
-import com.passfailerror.resultStack.ResultStackProcessor
+interface Token {
 
-class Token {
+    def mock(pipelineScript)
 
-    static ResultStackProcessor resultStackProcessor
-
-    def mock(pipelineScript) {}
-
-    def mockDefaults(pipelineScript) {}
+    def mockDefaults(pipelineScript)
 }

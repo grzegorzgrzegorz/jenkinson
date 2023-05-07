@@ -1,14 +1,16 @@
 package com.passfailerror.syntax
 
-
+import com.passfailerror.resultStack.ResultStackProcessor
 import groovy.util.logging.Slf4j
 
 @Slf4j
-class Sections extends Token {
+class Sections implements Token {
+
+    static ResultStackProcessor resultStackProcessor
 
     def sections = ["pipeline", "agent", "stages", "stage", "steps"]
 
-    def mock(pipelineScript){
+    def mock(pipelineScript) {
     }
 
     def mockDefaults(pipelineScript) {

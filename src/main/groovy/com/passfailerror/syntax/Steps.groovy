@@ -1,20 +1,22 @@
 package com.passfailerror.syntax
 
-
+import com.passfailerror.resultStack.ResultStackProcessor
 import groovy.util.logging.Slf4j
 
 @Slf4j
-class Steps extends Token {
+class Steps implements Token {
+
+    static ResultStackProcessor resultStackProcessor
 
     def steps = ["label", "echo", "sh"]
     def emulableTokenList = []
 
-    def mockDefaults(pipelineScript){
+    def mockDefaults(pipelineScript) {
         mockFromList(pipelineScript)
     }
 
-    def mock(pipelineScript){
-        emulableTokenList.each{ emulatingToken -> mockFromMap(pipelineScript, emulatingToken)}
+    def mock(pipelineScript) {
+        emulableTokenList.each { emulatingToken -> mockFromMap(pipelineScript, emulatingToken) }
     }
 
     def mockFromList(pipelineScript) {

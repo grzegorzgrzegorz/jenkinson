@@ -58,7 +58,8 @@ class Jenkinson {
     def initialize(ResultStackProcessor resultStackProcessor) {
         resultStackValidator.setResultStackProcessor(resultStackProcessor)
         Assertion.setResultStackValidator(resultStackValidator)
-        Token.setResultStackProcessor(resultStackProcessor)
+        Steps.setResultStackProcessor(resultStackProcessor)
+        Sections.setResultStackProcessor(resultStackProcessor)
         EmulableToken.setResultStackProcessor(resultStackProcessor)
     }
 
