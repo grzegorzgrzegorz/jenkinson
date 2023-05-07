@@ -1,6 +1,7 @@
 package com.passfailerror.resultStack
 
 import com.passfailerror.Utils
+import groovy.transform.NullCheck
 
 import java.nio.file.Files
 import java.nio.file.Path
@@ -9,9 +10,9 @@ import java.nio.file.Path
 class ResultStackProcessor {
 
     static defaultName = "Script1.groovy"
-    File pipelineFile
-    List<String> content
-    ResultStack resultStack = new ResultStack()
+    final File pipelineFile
+    final List<String> content
+    final ResultStack resultStack = new ResultStack()
 
     static ResultStackProcessor getInstanceFromPath(Path pipelinePath) {
         return new ResultStackProcessor(pipelinePath.toFile(), Files.readAllLines(pipelinePath))
@@ -25,6 +26,7 @@ class ResultStackProcessor {
         return ResultStackProcessor.getInstanceFromLines(text.tokenize(System.lineSeparator()))
     }
 
+    @NullCheck
     private ResultStackProcessor(File file, List<String> content) {
         this.pipelineFile = file
         this.content = content

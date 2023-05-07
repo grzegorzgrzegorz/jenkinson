@@ -11,6 +11,7 @@ import com.passfailerror.syntax.Sections
 import com.passfailerror.syntax.Steps
 import com.passfailerror.syntax.Token
 import com.passfailerror.syntax.EmulableToken
+import groovy.transform.NullCheck
 import groovy.util.logging.Slf4j
 
 import java.nio.file.Path
@@ -32,12 +33,13 @@ class Jenkinson {
         return initializeFromText('')
     }
 
-    Script pipelineScript
-    ResultStackProcessor resultStackProcessor
-    ResultStackValidator resultStackValidator = new ResultStackValidator()
-    Sections sections = new Sections()
-    Steps steps = new Steps()
+    final Script pipelineScript
+    final ResultStackProcessor resultStackProcessor
+    final ResultStackValidator resultStackValidator = new ResultStackValidator()
+    final Sections sections = new Sections()
+    final Steps steps = new Steps()
 
+    @NullCheck
     Jenkinson(String pipelineText) {
         resultStackProcessor = ResultStackProcessor.getInstanceFromText(pipelineText)
         initialize(resultStackProcessor)
@@ -45,6 +47,7 @@ class Jenkinson {
         mockJenkinsDefaults(pipelineScript)
     }
 
+    @NullCheck
     Jenkinson(Path pipelinePath) {
         resultStackProcessor = ResultStackProcessor.getInstanceFromPath(pipelinePath)
         initialize(resultStackProcessor)

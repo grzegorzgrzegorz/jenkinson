@@ -1,5 +1,7 @@
 package com.passfailerror.assertion
 
+import groovy.transform.NullCheck
+
 class DeclarativeAssertion extends Assertion {
 
 
@@ -7,8 +9,9 @@ class DeclarativeAssertion extends Assertion {
         return new DeclarativeAssertion(stageName)
     }
 
-    String declarativeItem
+    final String declarativeItem
 
+    @NullCheck
     DeclarativeAssertion(String declarativeItem) {
         this.declarativeItem = declarativeItem
     }
