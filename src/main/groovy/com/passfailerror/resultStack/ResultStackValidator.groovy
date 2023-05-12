@@ -3,7 +3,11 @@ package com.passfailerror.resultStack
 
 class ResultStackValidator {
 
-    ResultStackProcessor resultStackProcessor
+    final ResultStackProcessor resultStackProcessor
+
+    ResultStackValidator(resultStackProcessor){
+        this.resultStackProcessor = resultStackProcessor
+    }
 
     boolean itemIsCalled(String item, String param) {
         List<ResultStackEntry> invocationStack = resultStackProcessor.getInvocationStack()

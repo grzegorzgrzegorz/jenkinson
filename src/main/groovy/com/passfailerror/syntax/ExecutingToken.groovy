@@ -1,12 +1,18 @@
 package com.passfailerror.syntax
 
 import com.passfailerror.resultStack.ResultStackProcessor
+import groovy.transform.NullCheck
 import groovy.util.logging.Slf4j
 
 @Slf4j
 class ExecutingToken implements EmulableToken {
 
-    static ResultStackProcessor resultStackProcessor
+    final ResultStackProcessor resultStackProcessor
+
+    @NullCheck
+    ExecutingToken(resultStackProcessor){
+        this.resultStackProcessor = resultStackProcessor
+    }
 
     Map<String,List<String>> tokenParamValueMap = [:]
 

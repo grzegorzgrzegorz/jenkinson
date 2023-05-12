@@ -1,12 +1,18 @@
 package com.passfailerror.syntax
 
 import com.passfailerror.resultStack.ResultStackProcessor
+import groovy.transform.NullCheck
 import groovy.util.logging.Slf4j
 
 @Slf4j
 class Steps implements Token {
 
-    static ResultStackProcessor resultStackProcessor
+    final ResultStackProcessor resultStackProcessor
+
+    @NullCheck
+    Steps(resultStackProcessor){
+       this.resultStackProcessor = resultStackProcessor
+    }
 
     def defaultSteps = ["label", "echo", "sh"]
     def emulableTokenList = []

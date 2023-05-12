@@ -1,10 +1,16 @@
 package com.passfailerror.syntax
 
 import com.passfailerror.resultStack.ResultStackProcessor
+import groovy.transform.NullCheck
 
 class EmulatingToken implements EmulableToken{
 
-    static ResultStackProcessor resultStackProcessor
+    final ResultStackProcessor resultStackProcessor
+
+    @NullCheck
+    EmulatingToken(resultStackProcessor){
+        this.resultStackProcessor = resultStackProcessor
+    }
 
     Map<String,List<String>> tokenParamValueMap = [:]
     Map<String,Object> actionMap = [:]

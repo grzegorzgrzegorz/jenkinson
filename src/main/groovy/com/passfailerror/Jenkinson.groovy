@@ -37,27 +37,24 @@ class Jenkinson {
 
     final Script pipelineScript
     final ResultStackProcessor resultStackProcessor
-    final ResultStackValidator resultStackValidator = new ResultStackValidator()
-    final Sections sections = new Sections()
-    final Steps steps = new Steps()
+    final ResultStackValidator resultStackValidator
+    final Sections sections
+    final Steps steps
 
     @NullCheck
     Jenkinson(Script pipelineScript, ResultStackProcessor resultStackProcessor) {
         this.pipelineScript = pipelineScript
         this.resultStackProcessor = resultStackProcessor
-        initialize(resultStackProcessor)
-        mockJenkinsDefaults(pipelineScript)
+        this.resultStackValidator = new ResultStackValidator(resultStackProcessor)
+        this.steps = new Steps(resultStackProcessor)
+        this.sections = new Sections(resultStackProcessor)
+        initializations()
     }
 
-    def initialize(ResultStackProcessor resultStackProcessor) {
-        resultStackValidator.setResultStackProcessor(resultStackProcessor)
+    def initializations() {
+        mockJenkinsDefaults(pipelineScript)
         DeclarativeAssertion.setResultStackValidator(resultStackValidator)
         GeneralAssertion.setResultStackValidator(resultStackValidator)
-        Steps.setResultStackProcessor(resultStackProcessor)
-        Sections.setResultStackProcessor(resultStackProcessor)
-        EmulatingToken.setResultStackProcessor(resultStackProcessor)
-        ExecutingToken.setResultStackProcessor(resultStackProcessor)
-        ReturningValueToken.setResultStackProcessor(resultStackProcessor)
     }
 
     def run() {
@@ -84,15 +81,15 @@ class Jenkinson {
     }
 
     EmulateDsl emulateStep(item) {
-        return new EmulateDsl(this, Steps.class, item, new EmulatingToken())
+        return new EmulateDsl(this, Steps.class, item, new EmulatingToken(resultStackProcessor))
     }
 
     EmulateDsl executeStep(item) {
-        return new EmulateDsl(this, Steps.class, item, new ExecutingToken())
+        return new EmulateDsl(this, Steps.class, item, new ExecutingToken(resultStackProcessor))
     }
 
     EmulateDsl mockStep(item) {
-        return new EmulateDsl(this, Steps.class, item, new ReturningValueToken())
+        return new EmulateDsl(this, Steps.class, item, new ReturningValueToken(resultStackProcessor))
     }
 
 }
