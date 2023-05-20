@@ -17,17 +17,18 @@ class GeneralAssertion {
     }
 
     GeneralAssertion step(String stepName){
-        item = stepName
-        return this
+        return step(stepName, null)
     }
 
     GeneralAssertion step(String stepName, String parameter){
+        assert stepName != null && stepName =~ /^(\w+|\d+)/, "contract violation"
         item = stepName
         param = parameter
         return this
     }
 
     boolean isCalled() {
+        assert item != null && item =~ /^(\w+|\d+)/, "contract violation"
         return resultStackValidator.itemIsCalled(item, param)
     }
 

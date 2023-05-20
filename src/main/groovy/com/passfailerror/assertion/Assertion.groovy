@@ -24,10 +24,12 @@ class Assertion {
     }
 
     GeneralAssertion step(String stepName) {
+        assert stepName != null, "contract violation"
         return generalAssertion.step(stepName)
     }
 
     GeneralAssertion step(String stepName, String parameter) {
+        assert stepName != null && parameter != null, "contract violation"
         return generalAssertion.step(stepName, parameter)
     }
 
