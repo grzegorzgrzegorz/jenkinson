@@ -1,4 +1,7 @@
-package com.passfailerror.resultStack
+package com.passfailerror.resultStack.validator
+
+import com.passfailerror.resultStack.ResultStackEntry
+import com.passfailerror.resultStack.processor.ResultStackProcessor
 
 
 class ResultStackValidator {

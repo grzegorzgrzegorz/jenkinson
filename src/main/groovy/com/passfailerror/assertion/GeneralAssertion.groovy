@@ -1,7 +1,7 @@
 package com.passfailerror.assertion
 
-import com.passfailerror.Jenkinson
-import com.passfailerror.resultStack.ResultStackValidator
+
+import com.passfailerror.resultStack.validator.ResultStackValidator
 import groovy.transform.NullCheck
 
 class GeneralAssertion {

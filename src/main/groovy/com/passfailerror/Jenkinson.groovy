@@ -4,8 +4,8 @@ package com.passfailerror
 import com.passfailerror.assertion.DeclarativeAssertion
 import com.passfailerror.assertion.GeneralAssertion
 import com.passfailerror.dsl.EmulateDsl
-import com.passfailerror.resultStack.ResultStackProcessor
-import com.passfailerror.resultStack.ResultStackValidator
+import com.passfailerror.resultStack.processor.ResultStackProcessor
+import com.passfailerror.resultStack.validator.ResultStackValidator
 import com.passfailerror.script.FilePipelineScript
 import com.passfailerror.script.TextPipelineScript
 import com.passfailerror.syntax.*

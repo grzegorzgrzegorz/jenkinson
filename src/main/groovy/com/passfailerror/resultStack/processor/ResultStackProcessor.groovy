@@ -1,6 +1,8 @@
-package com.passfailerror.resultStack
+package com.passfailerror.resultStack.processor
 
 import com.passfailerror.Utils
+import com.passfailerror.resultStack.ResultStack
+import com.passfailerror.resultStack.ResultStackEntry
 import groovy.transform.NullCheck
 
 import java.nio.file.Files

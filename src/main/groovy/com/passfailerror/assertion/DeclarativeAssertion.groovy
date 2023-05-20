@@ -1,6 +1,6 @@
 package com.passfailerror.assertion
 
-import com.passfailerror.resultStack.ResultStackValidator
+import com.passfailerror.resultStack.validator.ResultStackValidator
 import groovy.transform.NullCheck
 
 class DeclarativeAssertion {
