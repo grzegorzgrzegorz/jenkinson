@@ -4,7 +4,7 @@ import com.passfailerror.Jenkinson
 import groovy.test.GroovyTestCase
 import objectiveLibrary.ObjectiveLibrary
 
-import static com.passfailerror.assertion.GeneralAssertion.step
+import static com.passfailerror.assertion.Assertion.the
 
 class testObjectiveLibrary extends GroovyTestCase {
 
@@ -23,28 +23,28 @@ class testObjectiveLibrary extends GroovyTestCase {
         //WHEN
         objectiveLibrary.run()
         //THEN
-        assert step("echo", "I am working in first stage").isCalled()
+        assert the(jenkinson).step("echo", "I am working in first stage").isCalled()
     }
 
     void test_objectiveLibraryAssertion_returnsFalse_forUnexistingValueInvocation() {
         //WHEN
         objectiveLibrary.run()
         //THEN
-        assert step("echo", "Unexisting text").isCalled() == false
+        assert the(jenkinson).step("echo", "Unexisting text").isCalled() == false
     }
 
     void test_objectiveLibraryAssertion_returnsFalse_forUnexistingStepInvocation() {
         //WHEN
         objectiveLibrary.run()
         //THEN
-        assert step("unexisting step", "I am working in first stage").isCalled() == false
+        assert the(jenkinson).step("unexisting step", "I am working in first stage").isCalled() == false
     }
 
     void test_objectiveLibraryAssertion_returnsFalse_forStepWhichExistsInNotExecutedPartOfLibrary() {
         //WHEN
         objectiveLibrary.secondStage()
         //THEN
-        assert step("echo", "I am working in first stage").isCalled() == false
+        assert the(jenkinson).step("echo", "I am working in first stage").isCalled() == false
     }
 
 }

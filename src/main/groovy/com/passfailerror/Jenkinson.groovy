@@ -40,6 +40,8 @@ class Jenkinson {
     final ResultStackValidator resultStackValidator
     final Sections sections
     final Steps steps
+    final DeclarativeAssertion declarativeAssertion
+    final GeneralAssertion generalAssertion
 
     @NullCheck
     Jenkinson(Script pipelineScript, ResultStackProcessor resultStackProcessor) {
@@ -48,13 +50,7 @@ class Jenkinson {
         this.resultStackValidator = new ResultStackValidator(resultStackProcessor)
         this.steps = new Steps(resultStackProcessor)
         this.sections = new Sections(resultStackProcessor)
-        initializations()
-    }
-
-    def initializations() {
         mockJenkinsDefaults(pipelineScript)
-        DeclarativeAssertion.setResultStackValidator(resultStackValidator)
-        GeneralAssertion.setResultStackValidator(resultStackValidator)
     }
 
     def run() {

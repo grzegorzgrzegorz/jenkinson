@@ -1,32 +1,30 @@
 package com.passfailerror.assertion
 
+import com.passfailerror.Jenkinson
 import com.passfailerror.resultStack.ResultStackValidator
 import groovy.transform.NullCheck
 
 class GeneralAssertion {
 
-    static ResultStackValidator resultStackValidator
+    final ResultStackValidator resultStackValidator
 
-    static GeneralAssertion step(String stepName) {
-        return new GeneralAssertion(stepName)
-    }
-
-    static GeneralAssertion step(String stepName, String param) {
-        return new GeneralAssertion(stepName, param)
-    }
-
-    final String item
-    final String param
+    def String item
+    def String param
 
     @NullCheck
-    GeneralAssertion(String item) {
-        this.item = item
+    GeneralAssertion(ResultStackValidator resultStackValidator) {
+        this.resultStackValidator = resultStackValidator
     }
 
-    @NullCheck
-    GeneralAssertion(String item, String param) {
-        this.item = item
-        this.param = param
+    GeneralAssertion step(String stepName){
+        item = stepName
+        return this
+    }
+
+    GeneralAssertion step(String stepName, String parameter){
+        item = stepName
+        param = parameter
+        return this
     }
 
     boolean isCalled() {

@@ -3,7 +3,7 @@ package acceptance
 import com.passfailerror.Jenkinson
 import groovy.test.GroovyTestCase
 
-import static com.passfailerror.assertion.GeneralAssertion.step
+import static com.passfailerror.assertion.Assertion.the
 
 class testGeneralAssertions extends GroovyTestCase {
 
@@ -17,30 +17,30 @@ class testGeneralAssertions extends GroovyTestCase {
     }
 
     void test_stepIsCalled_returnsTrue_forExistingStep_insideStage() {
-        assert step("sh").isCalled()
+        assert the(jenkinson).step("sh").isCalled()
     }
 
     void test_stepIsCalled_returnsTrue_forExistingStepWithParam_insideStage() {
-        assert step("sh", "mvn").isCalled()
+        assert the(jenkinson).step("sh", "mvn").isCalled()
     }
 
     void test_stepIsCalled_returnsTrue_forExistingStep_outsideStages() {
-        assert step("label").isCalled()
+        assert the(jenkinson).step("label").isCalled()
     }
 
     void test_stepIsCalled_returnsTrue_forExistingStepWithParam_outsideStages() {
-        assert step("label", "test").isCalled()
+        assert the(jenkinson).step("label", "test").isCalled()
     }
 
     void test_stepIsCalled_returnsFalse_forUnexistingStep() {
-        assert step("unexisting").isCalled() == false
+        assert the(jenkinson).step("unexisting").isCalled() == false
     }
 
     void test_stepIsCalled_returnsFalse_forExistingStepWithUnexistingParam_insideStage() {
-        assert step("sh", "unexisting").isCalled() == false
+        assert the(jenkinson).step("sh", "unexisting").isCalled() == false
     }
 
     void test_stepIsCalled_returnsFalse_forExistingStepWithUnexistingParam_outsideStages() {
-        assert step("label", "unexisting").isCalled() == false
+        assert the(jenkinson).step("label", "unexisting").isCalled() == false
     }
 }
