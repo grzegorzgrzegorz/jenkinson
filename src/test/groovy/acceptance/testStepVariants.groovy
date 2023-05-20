@@ -61,5 +61,5 @@ class testStepVariants extends GroovyTestCase {
         jenkinson.run()
         //THEN
         assert the(jenkinson).stage('Fourth stage').calls("echo", "mockedResult:mocked result")
-    }
+    } // ToDo: add ability to return value using closure
 }
