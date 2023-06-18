@@ -3,12 +3,15 @@ package com.passfailerror
 
 import com.passfailerror.assertion.DeclarativeAssertion
 import com.passfailerror.assertion.GeneralAssertion
-import com.passfailerror.dsl.ActionableTokenDsl
+import com.passfailerror.syntax.actionable.EmulatingToken
+import com.passfailerror.syntax.actionable.ExecutingToken
+import com.passfailerror.syntax.actionable.ReturningValueToken
+import com.passfailerror.syntax.actionable.dsl.ActionableTokenDsl
 import com.passfailerror.resultStack.processor.ResultStackProcessor
 import com.passfailerror.resultStack.validator.ResultStackValidator
 import com.passfailerror.script.FilePipelineScript
 import com.passfailerror.script.TextPipelineScript
-import com.passfailerror.actionable.*
+import com.passfailerror.syntax.*
 import groovy.transform.NullCheck
 import groovy.util.logging.Slf4j
 

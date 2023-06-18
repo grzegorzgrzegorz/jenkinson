@@ -1,4 +1,4 @@
-package com.passfailerror.syntax
+package com.passfailerror.syntax.actionable
 
 
 interface ActionableToken {

@@ -1,7 +1,7 @@
-package com.passfailerror.dsl
+package com.passfailerror.syntax.actionable.dsl
 
-import com.passfailerror.actionable.ActionableToken
-import com.passfailerror.actionable.Steps
+import com.passfailerror.syntax.actionable.ActionableToken
+import com.passfailerror.syntax.Steps
 import groovy.transform.NullCheck
 
 class ActionableTokenDsl {
