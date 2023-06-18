@@ -20,7 +20,7 @@ class ActionableTokenDsl {
         this.itemClass = itemClass
         this.item = item
         this.actionableToken = token
-        jenkinson.getSteps().getEmulableTokenList().add(token)
+        jenkinson.getSteps().getActionableList().add(token)
     }
 
     ActionableTokenDsl parameters(paramNameList) {
