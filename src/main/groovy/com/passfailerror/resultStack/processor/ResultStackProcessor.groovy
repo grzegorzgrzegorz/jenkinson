@@ -8,10 +8,10 @@ import groovy.transform.NullCheck
 import java.nio.file.Files
 import java.nio.file.Path
 
-
 class ResultStackProcessor {
 
     static defaultName = "Script1.groovy"
+    final prependix = ""
     final File pipelineFile
     final List<String> content
     final ResultStack resultStack = new ResultStack()
@@ -62,17 +62,19 @@ class ResultStackProcessor {
     }
 
     List<String> getLinesFromPipelineFile(List<Integer> lineNumbers) {
-        List<String> result = []
-        for (lineNumber in lineNumbers) {
-            if (lineNumber < 0) {
-                continue
-            }
-            int index = lineNumber - 1
-            String line = content.get(index).replace("{", "").replace("\t", "").replace("}", "").trim()
-            String prependix = ""
-            result.add(prependix + line)
-        }
-        return result
+        return lineNumbers
+                .findAll { it >= 0 }
+                .collect { getLineFromPipelineFile(it) }
+    }
+
+    String getLineFromPipelineFile(lineNumber) {
+        int index = lineNumber - 1
+        String line = content.get(index)
+                .replace("{", "")
+                .replace("\t", "")
+                .replace("}", "")
+                .trim()
+        return prependix + line
     }
 
     List<ResultStackEntry> getInvocationStackHavingStepWithParam(List<ResultStackEntry> invocationStack, String stepName, String param) {
