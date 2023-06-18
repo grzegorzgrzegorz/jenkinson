@@ -3,12 +3,12 @@ package com.passfailerror
 
 import com.passfailerror.assertion.DeclarativeAssertion
 import com.passfailerror.assertion.GeneralAssertion
-import com.passfailerror.dsl.EmulateDsl
+import com.passfailerror.dsl.ActionableTokenDsl
 import com.passfailerror.resultStack.processor.ResultStackProcessor
 import com.passfailerror.resultStack.validator.ResultStackValidator
 import com.passfailerror.script.FilePipelineScript
 import com.passfailerror.script.TextPipelineScript
-import com.passfailerror.syntax.*
+import com.passfailerror.actionable.*
 import groovy.transform.NullCheck
 import groovy.util.logging.Slf4j
 
@@ -80,16 +80,16 @@ class Jenkinson {
         sections.mockDefaults(pipelineScript)
     }
 
-    EmulateDsl emulateStep(item) {
-        return new EmulateDsl(this, Steps.class, item, new EmulatingToken(resultStackProcessor))
+    ActionableTokenDsl emulateStep(item) {
+        return new ActionableTokenDsl(this, Steps.class, item, new EmulatingToken(resultStackProcessor))
     }
 
-    EmulateDsl executeStep(item) {
-        return new EmulateDsl(this, Steps.class, item, new ExecutingToken(resultStackProcessor))
+    ActionableTokenDsl executeStep(item) {
+        return new ActionableTokenDsl(this, Steps.class, item, new ExecutingToken(resultStackProcessor))
     }
 
-    EmulateDsl mockStep(item) {
-        return new EmulateDsl(this, Steps.class, item, new ReturningValueToken(resultStackProcessor))
+    ActionableTokenDsl mockStep(item) {
+        return new ActionableTokenDsl(this, Steps.class, item, new ReturningValueToken(resultStackProcessor))
     }
 
 }

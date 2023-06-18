@@ -1,10 +1,10 @@
 package com.passfailerror.dsl
 
-import com.passfailerror.syntax.ActionableToken
-import com.passfailerror.syntax.Steps
+import com.passfailerror.actionable.ActionableToken
+import com.passfailerror.actionable.Steps
 import groovy.transform.NullCheck
 
-class EmulateDsl {
+class ActionableTokenDsl {
 
     final def jenkinson
     final def itemClass
@@ -12,7 +12,7 @@ class EmulateDsl {
     final ActionableToken actionableToken
 
     @NullCheck
-    EmulateDsl(jenkinson, itemClass, item, token) {
+    ActionableTokenDsl(jenkinson, itemClass, item, token) {
         this.jenkinson = jenkinson
         if (itemClass != Steps.class) {
             throw new RuntimeException("unsupported itemClass: " + itemClass.toString())
@@ -23,7 +23,7 @@ class EmulateDsl {
         jenkinson.getSteps().getEmulableTokenList().add(token)
     }
 
-    EmulateDsl parameters(paramNameList) {
+    ActionableTokenDsl parameters(paramNameList) {
         actionableToken.getTokenParamValueMap().put(item, paramNameList)
         return this
     }
