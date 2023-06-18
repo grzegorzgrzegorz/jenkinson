@@ -3,7 +3,7 @@ package acceptance
 import com.passfailerror.Jenkinson
 import groovy.test.GroovyTestCase
 
-import static com.passfailerror.assertion.Assertion.the
+import static com.passfailerror.assertion.Assertion.stage
 
 class testStepVariants extends GroovyTestCase {
 
@@ -17,7 +17,7 @@ class testStepVariants extends GroovyTestCase {
         //WHEN
         jenkinson.run()
         //THEN
-        assert the(jenkinson).stage('First stage').calls("echo", "defaultResult:null")
+        assert stage('First stage').calls("echo", "defaultResult:null")
     }
 
     void test_shStep_isExecuted() {
@@ -26,7 +26,7 @@ class testStepVariants extends GroovyTestCase {
         //WHEN
         jenkinson.run()
         //THEN
-        assert the(jenkinson).stage('Second stage').calls("echo", "resultBasingOnRealExecution:git version")
+        assert stage('Second stage').calls("echo", "resultBasingOnRealExecution:git version")
     }
 
     class CustomShEmulator {
@@ -51,7 +51,7 @@ class testStepVariants extends GroovyTestCase {
         //WHEN
         jenkinson.run()
         //THEN
-        assert the(jenkinson).stage('Third stage').calls("echo", "resultBasingOnCustomCode:inputData computed result")
+        assert stage('Third stage').calls("echo", "resultBasingOnCustomCode:inputData computed result")
     }
 
     void test_step_returnsMockedValue() {
@@ -60,6 +60,6 @@ class testStepVariants extends GroovyTestCase {
         //WHEN
         jenkinson.run()
         //THEN
-        assert the(jenkinson).stage('Fourth stage').calls("echo", "mockedResult:mocked result")
+        assert stage('Fourth stage').calls("echo", "mockedResult:mocked result")
     } // ToDo: add ability to return value using closure
 }

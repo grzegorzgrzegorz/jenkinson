@@ -18,17 +18,21 @@ import java.nio.file.Paths
 @Slf4j
 class Jenkinson {
 
+    static Jenkinson jenkinson
+
     static Jenkinson initializeFromFile(String pipelineFileName) {
         Path pipelinePath = Paths.get(Jenkinson.class.getClassLoader().getResource(pipelineFileName).toURI())
         def resultStackProcessor = ResultStackProcessor.getInstanceFromPath(pipelinePath)
         def pipelineScript = new FilePipelineScript(pipelinePath).get()
-        return new Jenkinson(pipelineScript, resultStackProcessor)
+        jenkinson = new Jenkinson(pipelineScript, resultStackProcessor)
+        return jenkinson
     }
 
     static Jenkinson initializeFromText(String pipelineText) {
         def resultStackProcessor = ResultStackProcessor.getInstanceFromText(pipelineText)
         def pipelineScript = new TextPipelineScript(pipelineText).get()
-        return new Jenkinson(pipelineScript, resultStackProcessor)
+        jenkinson = new Jenkinson(pipelineScript, resultStackProcessor)
+        return jenkinson
     }
 
     static Jenkinson initialize() {
