@@ -1,24 +1,34 @@
 package com.passfailerror.assertion
 
-class GeneralAssertion extends Assertion {
 
-    static GeneralAssertion step(String stepName) {
-        return new GeneralAssertion(stepName, null)
+import com.passfailerror.resultStack.validator.ResultStackValidator
+import groovy.transform.NullCheck
+
+class GeneralAssertion {
+
+    final ResultStackValidator resultStackValidator
+
+    def String item
+    def String param
+
+    @NullCheck
+    GeneralAssertion(ResultStackValidator resultStackValidator) {
+        this.resultStackValidator = resultStackValidator
     }
 
-    static GeneralAssertion step(String stepName, String param) {
-        return new GeneralAssertion(stepName, param)
+    GeneralAssertion step(String stepName){
+        return step(stepName, null)
     }
 
-    String item
-    String param
-
-    GeneralAssertion(String item, String param) {
-        this.item = item
-        this.param = param
+    GeneralAssertion step(String stepName, String parameter){
+        assert stepName != null && stepName =~ /^(\w+|\d+)/, "contract violation"
+        item = stepName
+        param = parameter
+        return this
     }
 
     boolean isCalled() {
+        assert item != null && item =~ /^(\w+|\d+)/, "contract violation"
         return resultStackValidator.itemIsCalled(item, param)
     }
 

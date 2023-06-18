@@ -1,9 +1,27 @@
-package com.passfailerror.syntax
+package com.passfailerror.syntax.actionable
 
+import com.passfailerror.resultStack.processor.ResultStackProcessor
+import groovy.transform.NullCheck
 import groovy.util.logging.Slf4j
 
 @Slf4j
-class ExecutingToken extends EmulableToken {
+class ExecutingToken implements ActionableToken {
+
+    final ResultStackProcessor resultStackProcessor
+
+    @NullCheck
+    ExecutingToken(resultStackProcessor){
+        this.resultStackProcessor = resultStackProcessor
+    }
+
+    Map<String,List<String>> tokenParamValueMap = [:]
+
+    def tokenMapContains(map, token, command){
+        if (map.containsKey(token) && command.contains(map[token])) {
+            return true
+        }
+        return false
+    }
 
     def modifyCommandOutput(currentStep, actualCommand, params) {
         if (tokenMapContains(tokenParamValueMap, currentStep, actualCommand)) {

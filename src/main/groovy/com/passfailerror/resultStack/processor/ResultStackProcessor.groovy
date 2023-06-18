@@ -1,17 +1,20 @@
-package com.passfailerror.resultStack
+package com.passfailerror.resultStack.processor
 
 import com.passfailerror.Utils
+import com.passfailerror.resultStack.ResultStack
+import com.passfailerror.resultStack.ResultStackEntry
+import groovy.transform.NullCheck
 
 import java.nio.file.Files
 import java.nio.file.Path
 
-
 class ResultStackProcessor {
 
     static defaultName = "Script1.groovy"
-    File pipelineFile
-    List<String> content
-    ResultStack resultStack = new ResultStack()
+    final prependix = ""
+    final File pipelineFile
+    final List<String> content
+    final ResultStack resultStack = new ResultStack()
 
     static ResultStackProcessor getInstanceFromPath(Path pipelinePath) {
         return new ResultStackProcessor(pipelinePath.toFile(), Files.readAllLines(pipelinePath))
@@ -25,6 +28,7 @@ class ResultStackProcessor {
         return ResultStackProcessor.getInstanceFromLines(text.tokenize(System.lineSeparator()))
     }
 
+    @NullCheck
     private ResultStackProcessor(File file, List<String> content) {
         this.pipelineFile = file
         this.content = content
@@ -58,17 +62,19 @@ class ResultStackProcessor {
     }
 
     List<String> getLinesFromPipelineFile(List<Integer> lineNumbers) {
-        List<String> result = []
-        for (lineNumber in lineNumbers) {
-            if (lineNumber < 0) {
-                continue
-            }
-            int index = lineNumber - 1
-            String line = content.get(index).replace("{", "").replace("\t", "").replace("}", "").trim()
-            String prependix = ""
-            result.add(prependix + line)
-        }
-        return result
+        return lineNumbers
+                .findAll { it >= 0 }
+                .collect { getLineFromPipelineFile(it) }
+    }
+
+    String getLineFromPipelineFile(lineNumber) {
+        int index = lineNumber - 1
+        String line = content.get(index)
+                .replace("{", "")
+                .replace("\t", "")
+                .replace("}", "")
+                .trim()
+        return prependix + line
     }
 
     List<ResultStackEntry> getInvocationStackHavingStepWithParam(List<ResultStackEntry> invocationStack, String stepName, String param) {

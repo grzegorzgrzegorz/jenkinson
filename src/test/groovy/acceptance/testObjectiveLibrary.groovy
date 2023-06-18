@@ -4,7 +4,7 @@ import com.passfailerror.Jenkinson
 import groovy.test.GroovyTestCase
 import objectiveLibrary.ObjectiveLibrary
 
-import static com.passfailerror.assertion.GeneralAssertion.step
+import static com.passfailerror.assertion.Assertion.step
 
 class testObjectiveLibrary extends GroovyTestCase {
 

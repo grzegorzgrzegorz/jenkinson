@@ -1,21 +1,24 @@
 package com.passfailerror.syntax
 
-
+import com.passfailerror.resultStack.processor.ResultStackProcessor
+import groovy.transform.NullCheck
 import groovy.util.logging.Slf4j
 
 @Slf4j
-class Steps extends Token {
+class Steps implements Token {
 
-    def steps = ["label", "echo", "sh"]
-    def emulableTokenList = []
+    final ResultStackProcessor resultStackProcessor
 
-    def mock(pipelineScript){
-        mockFromList(pipelineScript)
-        emulableTokenList.each{ emulatingToken -> mockFromMap(pipelineScript, emulatingToken)}
+    @NullCheck
+    Steps(resultStackProcessor){
+       this.resultStackProcessor = resultStackProcessor
     }
 
-    def mockFromList(pipelineScript) {
-        steps.each {
+    def defaultSteps = ["label", "echo", "sh"]
+    def actionableList = []
+
+    def mockDefaults(pipelineScript) {
+        defaultSteps.each {
             step ->
                 def currentStep = step
                 pipelineScript.metaClass."$currentStep" = { Object... params ->
@@ -23,6 +26,10 @@ class Steps extends Token {
                     resultStackProcessor.storeInvocation(currentStep, params, pipelineScript.getBinding().getVariables())
                 }
         }
+    }
+
+    def mock(pipelineScript) {
+        actionableList.each { emulatingToken -> mockFromMap(pipelineScript, emulatingToken) }
     }
 
     def mockFromMap(pipelineScript, tokenObject) {

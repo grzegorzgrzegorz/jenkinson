@@ -1,16 +1,22 @@
 package com.passfailerror.assertion
 
-class DeclarativeAssertion extends Assertion {
+import com.passfailerror.resultStack.validator.ResultStackValidator
+import groovy.transform.NullCheck
 
+class DeclarativeAssertion {
 
-    static DeclarativeAssertion stage(String stageName) {
-        return new DeclarativeAssertion(stageName)
+    final ResultStackValidator resultStackValidator
+    def String declarativeItem
+
+    @NullCheck
+    DeclarativeAssertion(ResultStackValidator resultStackValidator) {
+        this.resultStackValidator = resultStackValidator
     }
 
-    String declarativeItem
-
-    DeclarativeAssertion(String declarativeItem) {
-        this.declarativeItem = declarativeItem
+    DeclarativeAssertion stage(String stageName) {
+        assert stageName != null && stageName =~ /^(\w+|\d+)/, "contract violation"
+        declarativeItem = stageName
+        return this
     }
 
     boolean calls(String stepName) {
@@ -18,10 +24,12 @@ class DeclarativeAssertion extends Assertion {
     }
 
     boolean calls(String stepName, String param) {
+        assert stepName != null && stepName =~ /^(\w+|\d+)/, "contract violation"
         return resultStackValidator.declarativeItemCallsStepWithParam(declarativeItem, stepName, param)
     }
 
     boolean hasEnvVariable(String variableName) {
+        assert variableName != null && variableName =~ /^(\w+|\d+)/, "contract violation"
         return resultStackValidator.declarativeItemHasEnvVariable(declarativeItem, variableName)
     }
 }

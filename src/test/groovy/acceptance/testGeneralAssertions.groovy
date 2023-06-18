@@ -3,7 +3,7 @@ package acceptance
 import com.passfailerror.Jenkinson
 import groovy.test.GroovyTestCase
 
-import static com.passfailerror.assertion.GeneralAssertion.step
+import static com.passfailerror.assertion.Assertion.step
 
 class testGeneralAssertions extends GroovyTestCase {
 

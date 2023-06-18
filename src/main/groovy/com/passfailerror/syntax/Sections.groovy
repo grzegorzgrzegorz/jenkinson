@@ -1,15 +1,25 @@
 package com.passfailerror.syntax
 
-
+import com.passfailerror.resultStack.processor.ResultStackProcessor
+import groovy.transform.NullCheck
 import groovy.util.logging.Slf4j
 
 @Slf4j
-class Sections extends Token {
+class Sections implements Token {
 
-    def sections = ["pipeline", "agent", "stages", "stage", "steps"]
+    final ResultStackProcessor resultStackProcessor
+    def defaultSections = ["pipeline", "agent", "stages", "stage", "steps"]
+
+    @NullCheck
+    Sections(resultStackProcessor){
+        this.resultStackProcessor = resultStackProcessor
+    }
 
     def mock(pipelineScript) {
-        sections.each {
+    }
+
+    def mockDefaults(pipelineScript) {
+        defaultSections.each {
             section ->
                 def currentSection = section
                 pipelineScript.metaClass."$currentSection" = { Object... params ->

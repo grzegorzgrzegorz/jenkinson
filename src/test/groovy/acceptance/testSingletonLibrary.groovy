@@ -3,7 +3,7 @@ package acceptance
 import com.passfailerror.Jenkinson
 import groovy.test.GroovyTestCase
 
-import static com.passfailerror.assertion.GeneralAssertion.step
+import static com.passfailerror.assertion.Assertion.step
 
 class testSingletonLibrary extends GroovyTestCase {
 
@@ -17,19 +17,19 @@ class testSingletonLibrary extends GroovyTestCase {
     }
 
     void test_stepIsCalled_insideLibrary() {
-        assert step("echo","param:").isCalled()
+        assert step("echo", "param:").isCalled()
     }
 
     void test_stepIsCalled_insideNestedLibrary() {
-        assert step("echo","innerParam:").isCalled()
+        assert step("echo", "innerParam:").isCalled()
     }
 
     void test_assertingExistingStep_withUnexistingParameter_isFalse() {
-        assert step("echo","unexisting").isCalled() == false
+        assert step("echo", "unexisting").isCalled() == false
     }
 
     void test_assertingUnexistingStep_withExistingParameter_isFalse() {
-        assert step("unexistingStep","param:").isCalled() == false
+        assert step("unexistingStep", "param:").isCalled() == false
     }
 
 }

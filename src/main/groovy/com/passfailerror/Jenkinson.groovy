@@ -1,16 +1,18 @@
 package com.passfailerror
 
-import com.passfailerror.assertion.Assertion
-import com.passfailerror.dsl.EmulateDsl
-import com.passfailerror.resultStack.ResultStackProcessor
-import com.passfailerror.resultStack.ResultStackValidator
-import com.passfailerror.syntax.EmulatingToken
-import com.passfailerror.syntax.ExecutingToken
-import com.passfailerror.syntax.ReturningValueToken
-import com.passfailerror.syntax.Sections
-import com.passfailerror.syntax.Steps
-import com.passfailerror.syntax.Token
-import com.passfailerror.syntax.EmulableToken
+
+import com.passfailerror.assertion.DeclarativeAssertion
+import com.passfailerror.assertion.GeneralAssertion
+import com.passfailerror.syntax.actionable.EmulatingToken
+import com.passfailerror.syntax.actionable.ExecutingToken
+import com.passfailerror.syntax.actionable.ReturningValueToken
+import com.passfailerror.syntax.actionable.dsl.ActionableTokenDsl
+import com.passfailerror.resultStack.processor.ResultStackProcessor
+import com.passfailerror.resultStack.validator.ResultStackValidator
+import com.passfailerror.script.FilePipelineScript
+import com.passfailerror.script.TextPipelineScript
+import com.passfailerror.syntax.*
+import groovy.transform.NullCheck
 import groovy.util.logging.Slf4j
 
 import java.nio.file.Path
@@ -19,59 +21,43 @@ import java.nio.file.Paths
 @Slf4j
 class Jenkinson {
 
+    static Jenkinson jenkinson
+
     static Jenkinson initializeFromFile(String pipelineFileName) {
         Path pipelinePath = Paths.get(Jenkinson.class.getClassLoader().getResource(pipelineFileName).toURI())
-        return new Jenkinson(pipelinePath)
+        def resultStackProcessor = ResultStackProcessor.getInstanceFromPath(pipelinePath)
+        def pipelineScript = new FilePipelineScript(pipelinePath).get()
+        jenkinson = new Jenkinson(pipelineScript, resultStackProcessor)
+        return jenkinson
     }
 
     static Jenkinson initializeFromText(String pipelineText) {
-        return new Jenkinson(pipelineText)
+        def resultStackProcessor = ResultStackProcessor.getInstanceFromText(pipelineText)
+        def pipelineScript = new TextPipelineScript(pipelineText).get()
+        jenkinson = new Jenkinson(pipelineScript, resultStackProcessor)
+        return jenkinson
     }
 
-    static Jenkinson initialize(){
+    static Jenkinson initialize() {
         return initializeFromText('')
     }
 
-    Script pipelineScript
-    ResultStackProcessor resultStackProcessor
-    ResultStackValidator resultStackValidator = new ResultStackValidator()
-    Sections sections = new Sections()
-    Steps steps = new Steps()
+    final Script pipelineScript
+    final ResultStackProcessor resultStackProcessor
+    final ResultStackValidator resultStackValidator
+    final Sections sections
+    final Steps steps
+    final DeclarativeAssertion declarativeAssertion
+    final GeneralAssertion generalAssertion
 
-    Jenkinson(String pipelineText) {
-        resultStackProcessor = ResultStackProcessor.getInstanceFromText(pipelineText)
-        initialize(resultStackProcessor)
-        pipelineScript = getPipelineScriptFromText(pipelineText)
-        mockJenkins(pipelineScript)
-    }
-
-    Jenkinson(Path pipelinePath) {
-        resultStackProcessor = ResultStackProcessor.getInstanceFromPath(pipelinePath)
-        initialize(resultStackProcessor)
-        pipelineScript = getPipelineScriptFromPath(pipelinePath)
-        mockJenkins(pipelineScript)
-    }
-
-    def initialize(ResultStackProcessor resultStackProcessor) {
-        resultStackValidator.setResultStackProcessor(resultStackProcessor)
-        Assertion.setResultStackValidator(resultStackValidator)
-        Token.setResultStackProcessor(resultStackProcessor)
-        EmulableToken.setResultStackProcessor(resultStackProcessor)
-    }
-
-    def getPipelineScriptFromText(String text) {
-        def binding = new Binding()
-        binding.setProperty("env", [:])
-        GroovyShell shell = new GroovyShell(binding)
-        return shell.parse(text)
-    }
-
-    Script getPipelineScriptFromPath(Path pipelinePath) {
-        def pipelineFile = pipelinePath.toFile()
-        def binding = new Binding()
-        binding.setProperty("env", [:])
-        GroovyShell shell = new GroovyShell(binding)
-        return shell.parse(pipelineFile)
+    @NullCheck
+    Jenkinson(Script pipelineScript, ResultStackProcessor resultStackProcessor) {
+        this.pipelineScript = pipelineScript
+        this.resultStackProcessor = resultStackProcessor
+        this.resultStackValidator = new ResultStackValidator(resultStackProcessor)
+        this.steps = new Steps(resultStackProcessor)
+        this.sections = new Sections(resultStackProcessor)
+        mockJenkinsDefaults(pipelineScript)
     }
 
     def run() {
@@ -90,19 +76,23 @@ class Jenkinson {
 
     def mockJenkins(pipelineScript) {
         steps.mock(pipelineScript)
-        sections.mock(pipelineScript)
     }
 
-    EmulateDsl emulateStep(item){
-        return new EmulateDsl(this, Steps.class, item, new EmulatingToken())
+    def mockJenkinsDefaults(pipelineScript) {
+        steps.mockDefaults(pipelineScript)
+        sections.mockDefaults(pipelineScript)
     }
 
-    EmulateDsl executeStep(item){
-        return new EmulateDsl(this, Steps.class, item, new ExecutingToken())
+    ActionableTokenDsl emulateStep(item) {
+        return new ActionableTokenDsl(this, Steps.class, item, new EmulatingToken(resultStackProcessor))
     }
 
-    EmulateDsl mockStep(item){
-        return new EmulateDsl(this, Steps.class, item,new ReturningValueToken())
+    ActionableTokenDsl executeStep(item) {
+        return new ActionableTokenDsl(this, Steps.class, item, new ExecutingToken(resultStackProcessor))
+    }
+
+    ActionableTokenDsl mockStep(item) {
+        return new ActionableTokenDsl(this, Steps.class, item, new ReturningValueToken(resultStackProcessor))
     }
 
 }
