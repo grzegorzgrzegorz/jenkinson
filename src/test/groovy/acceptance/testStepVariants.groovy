@@ -11,6 +11,7 @@ class testStepVariants extends GroovyTestCase {
 
     void setUp() {
         jenkinson = Jenkinson.initializeFromFile("pipeline_with_emulator.groovy")
+        jenkinson.mockStep("parameterlessCustomStep")
     }
 
     void test_step_returns_null() {
