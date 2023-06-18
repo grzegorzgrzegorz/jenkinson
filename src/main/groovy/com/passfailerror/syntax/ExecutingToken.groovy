@@ -5,7 +5,7 @@ import groovy.transform.NullCheck
 import groovy.util.logging.Slf4j
 
 @Slf4j
-class ExecutingToken implements EmulableToken {
+class ExecutingToken implements ActionableToken {
 
     final ResultStackProcessor resultStackProcessor
 

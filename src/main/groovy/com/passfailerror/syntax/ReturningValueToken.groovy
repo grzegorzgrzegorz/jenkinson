@@ -3,7 +3,7 @@ package com.passfailerror.syntax
 import com.passfailerror.resultStack.processor.ResultStackProcessor
 import groovy.transform.NullCheck
 
-class ReturningValueToken implements EmulableToken{
+class ReturningValueToken implements ActionableToken{
 
 
     final ResultStackProcessor resultStackProcessor

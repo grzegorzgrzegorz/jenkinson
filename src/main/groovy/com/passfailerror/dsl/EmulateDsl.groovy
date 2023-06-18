@@ -1,6 +1,6 @@
 package com.passfailerror.dsl
 
-import com.passfailerror.syntax.EmulableToken
+import com.passfailerror.syntax.ActionableToken
 import com.passfailerror.syntax.Steps
 import groovy.transform.NullCheck
 
@@ -9,7 +9,7 @@ class EmulateDsl {
     final def jenkinson
     final def itemClass
     final def item
-    final EmulableToken emulableToken
+    final ActionableToken actionableToken
 
     @NullCheck
     EmulateDsl(jenkinson, itemClass, item, token) {
@@ -19,21 +19,21 @@ class EmulateDsl {
         }
         this.itemClass = itemClass
         this.item = item
-        this.emulableToken = token
+        this.actionableToken = token
         jenkinson.getSteps().getEmulableTokenList().add(token)
     }
 
     EmulateDsl parameters(paramNameList) {
-        emulableToken.getTokenParamValueMap().put(item, paramNameList)
+        actionableToken.getTokenParamValueMap().put(item, paramNameList)
         return this
     }
 
     void setEmulator(emulatorClass) {
-        emulableToken.getActionMap().put(item, emulatorClass)
+        actionableToken.getActionMap().put(item, emulatorClass)
     }
 
     void returnValue(value) {
-        emulableToken.getActionMap().put(item, value)
+        actionableToken.getActionMap().put(item, value)
      }
 
 }

@@ -15,7 +15,7 @@ class Steps implements Token {
     }
 
     def defaultSteps = ["label", "echo", "sh"]
-    def emulableTokenList = []
+    def actionableStepsList = []
 
     def mockDefaults(pipelineScript) {
         defaultSteps.each {
@@ -29,7 +29,7 @@ class Steps implements Token {
     }
 
     def mock(pipelineScript) {
-        emulableTokenList.each { emulatingToken -> mockFromMap(pipelineScript, emulatingToken) }
+        actionableStepsList.each { emulatingToken -> mockFromMap(pipelineScript, emulatingToken) }
     }
 
     def mockFromMap(pipelineScript, tokenObject) {

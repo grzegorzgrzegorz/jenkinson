@@ -1,7 +1,7 @@
 package com.passfailerror.syntax
 
 
-interface EmulableToken {
+interface ActionableToken {
 
 
     def tokenMapContains(map, token, command)
