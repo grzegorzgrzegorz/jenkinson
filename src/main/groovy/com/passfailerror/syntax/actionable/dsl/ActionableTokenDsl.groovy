@@ -20,6 +20,7 @@ class ActionableTokenDsl {
         this.itemClass = itemClass
         this.item = item
         this.actionableToken = token
+        actionableToken.getTokenParamValueMap().put(item, "")
         jenkinson.getSteps().getActionableList().add(token)
     }
 
@@ -28,11 +29,11 @@ class ActionableTokenDsl {
         return this
     }
 
-    void setEmulator(emulatorClass) {
+    void setEmulator(emulatorClass) { //todo: setEmulator should only be available for emulateStep
         actionableToken.getActionMap().put(item, emulatorClass)
     }
 
-    void returnValue(value) {
+    void returnValue(value) { //todo: returnValue should only be available for mockStep
         actionableToken.getActionMap().put(item, value)
      }
 

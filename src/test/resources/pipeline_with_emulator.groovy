@@ -22,6 +22,8 @@ pipeline {
                 echo 'Third - we need to mimic computation basing on some input parameters and so we execute custom code instead of script'
                 def resultBasingOnCustomCode = sh(script: "complicatedAppWhichComputesResultInProduction inputData", returnStdout: true)
                 echo 'resultBasingOnCustomCode:'+resultBasingOnCustomCode
+                def resultBasingOnCustomCode2 = parameterlessCustomStep()
+                echo 'resultBasingOnCustomCode2:'+resultBasingOnCustomCode2
             }
         }
         stage('Fourth stage') {

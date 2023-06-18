@@ -11,6 +11,7 @@ class testStepVariants extends GroovyTestCase {
 
     void setUp() {
         jenkinson = Jenkinson.initializeFromFile("pipeline_with_emulator.groovy")
+        jenkinson.mockStep("parameterlessCustomStep")
     }
 
     void test_step_returns_null() {
@@ -20,7 +21,7 @@ class testStepVariants extends GroovyTestCase {
         assert stage('First stage').calls("echo", "defaultResult:null")
     }
 
-    void test_shStep_isExecuted() {
+    void test_step_isExecuted() {
         //GIVEN
         jenkinson.executeStep("sh").parameters(["git --version"])
         //WHEN
@@ -45,13 +46,34 @@ class testStepVariants extends GroovyTestCase {
         }
     }
 
-    void test_shStep_isExecuted_usingCustomCode() {
+    void test_step_isExecuted_usingCustomCode() {
         //GIVEN
         jenkinson.emulateStep("sh").parameters(["complicatedAppWhichComputesResultInProduction"]).setEmulator(new CustomShEmulator())
         //WHEN
         jenkinson.run()
         //THEN
         assert stage('Third stage').calls("echo", "resultBasingOnCustomCode:inputData computed result")
+    }
+
+    void test_step_isExecuted_usingClosureWithParameters() {
+        //GIVEN
+        def closure = { parameters -> return parameters[0].script}
+        jenkinson.mockStep("sh").parameters(["complicatedAppWhichComputesResultInProduction"]).returnValue(closure)
+        //WHEN
+        jenkinson.run()
+        //THEN
+        assert stage('Third stage').calls("echo", "resultBasingOnCustomCode:complicatedAppWhichComputesResultInProduction inputData")
+    }
+
+
+    void test_step_isExecuted_usingParameterlessClosure() {
+        //GIVEN
+        def closure = {-> return "value from closure"}
+        jenkinson.mockStep("parameterlessCustomStep").returnValue(closure)
+        //WHEN
+        jenkinson.run()
+        //THEN
+        assert stage('Third stage').calls("echo", "resultBasingOnCustomCode2:value from closure")
     }
 
     void test_step_returnsMockedValue() {
@@ -61,5 +83,6 @@ class testStepVariants extends GroovyTestCase {
         jenkinson.run()
         //THEN
         assert stage('Fourth stage').calls("echo", "mockedResult:mocked result")
-    } // ToDo: add ability to return value using closure
+    }
+
 }
