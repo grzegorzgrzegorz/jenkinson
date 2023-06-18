@@ -20,6 +20,7 @@ class ActionableTokenDsl {
         this.itemClass = itemClass
         this.item = item
         this.actionableToken = token
+        actionableToken.getTokenParamValueMap().put(item, "")
         jenkinson.getSteps().getActionableList().add(token)
     }
 
