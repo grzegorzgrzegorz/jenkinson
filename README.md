@@ -157,6 +157,92 @@ By default step is mocked and doesn't do any action: doesn't execute any code or
     //THEN
     assert stage('Fourth stage').calls("echo", "mockedResult:mocked result")
 
+## Singleton libraries
+Most often singleton libraries are used in Jenkins as so called shared libraries. These can also be tested.
+Example of singleton library:
+
+    def call(param) {
+    echo "param: " + param
+    innerMethod(param)
+    }
+    
+    def innerMethod(innerParam){
+    echo "innerParam: "+innerParam
+    }
+
+### Step is called
+
+    //GIVEN
+    jenkinson = Jenkinson.initializeFromFile("singletonLibrary.groovy")
+    //WHEN
+    jenkinson.runMethod("call")
+    //THEN
+    assert step("echo", "param:").isCalled()
+
+## Objective libraries
+Much more interesting is the possibility of using objective libraries in Jenkins. 
+
+ObjectiveLibrary.groovy:
+
+    package objectiveLibrary
+    
+    class ObjectiveLibrary implements Serializable {
+    
+        private static final long serialVersionUID
+    
+        def scriptObject // org.jenkinsci.plugins.workflow.cps.CpsScript
+        def paramsMap
+        def utils
+    
+        ObjectiveLibrary(scriptObject, paramsMap) {
+            this.scriptObject = scriptObject
+            this.paramsMap = paramsMap
+            this.utils = new ObjectiveUtils(scriptObject)
+        }
+    
+        def initialize() {
+            checkParamsMap()
+        }
+    
+        def checkParamsMap() {
+            paramsMap.each { entry ->
+                utils.checkNotNull(entry.key, entry.value)
+            }
+        }
+    
+        def run() {
+            firstStage()
+            secondStage()
+        }
+    
+        def firstStage() {
+            scriptObject.stage('First stage') {
+                scriptObject.echo "I am working in first stage"
+                scriptObject.echo "paramsMap p1: "+paramsMap.p1
+            }
+        }
+    
+        def secondStage() {
+            scriptObject.stage('Second stage') {
+                scriptObject.echo "I am working in second stage"
+                scriptObject.echo "paramsMap p2: "+paramsMap.p2
+            }
+        }
+    }
+
+It can be tested as well:
+
+### Step is called
+    
+    //GIVEN
+    jenkinson = Jenkinson.initialize()
+    paramsMap = ["p1": "p1_value", "p2": "p2_value"]
+    objectiveLibrary = new ObjectiveLibrary(jenkinson.getPipelineScript(), paramsMap)
+    objectiveLibrary.initialize()
+    //WHEN
+    objectiveLibrary.run()
+    //THEN
+    assert step("echo", "I am working in first stage").isCalled()
 
 ## More info
-Tests are serving documentation purpose. One can browse src/test/groovy/acceptance tests for usage examples.
+All the acceptance tests are serving also documentation purpose. One can browse src/test/groovy/acceptance tests for usage examples.
