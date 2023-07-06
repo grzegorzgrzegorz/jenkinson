@@ -8,10 +8,27 @@ import groovy.util.logging.Slf4j
 class Sections implements Token {
 
     final ResultStackProcessor resultStackProcessor
-    def defaultSections = ["pipeline", "agent", "stages", "stage", "steps"]
+    def defaultSections = ["pipeline",
+                           "agent",
+                           "stages",
+                           "stage",
+                           "steps",
+                           "parameters",
+                           "options",
+                           "node",
+                           "environment",
+                           "post",
+                           "always",
+                           "script",
+                           "when",
+                           "not",
+                           "triggers",
+                           "catchError",
+                           "dir",
+                           "withCredentials"]
 
     @NullCheck
-    Sections(resultStackProcessor){
+    Sections(resultStackProcessor) {
         this.resultStackProcessor = resultStackProcessor
     }
 

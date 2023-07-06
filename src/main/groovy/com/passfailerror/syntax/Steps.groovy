@@ -14,7 +14,29 @@ class Steps implements Token {
         this.resultStackProcessor = resultStackProcessor
     }
 
-    def defaultSteps = ["label", "echo", "sh"]
+    def defaultSteps = ["label",
+                        "echo",
+                        "sh",
+                        "logRotator",
+                        "buildDiscarder",
+                        "skipDefaultChackout",
+                        "timestamps",
+                        "timeout",
+                        "disableConcurrentBuilds",
+                        "office365ConnectorWebhooks",
+                        "cleanWs",
+                        "library",
+                        "tool",
+                        "modernSCM",
+                        "checkout",
+                        "build",
+                        "usernamePassword",
+                        "office365ConnectorSend",
+                        "archiveArtifacts",
+                        "beforeAgent",
+                        "environment",
+                        "cron"]
+
     def actionableList = []
 
     def mockDefaults(pipelineScript) {
@@ -36,10 +58,9 @@ class Steps implements Token {
         tokenObject.getTokenParamValueMap().each { entry ->
             def currentStep = entry.key
             pipelineScript.metaClass."$currentStep" = { Object... params ->
-                if(params){
+                if (params) {
                     log.info(currentStep + " " + params[0].toString())
-                }
-                else{
+                } else {
                     log.info(currentStep)
                 }
                 def actualCommand = ""
