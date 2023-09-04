@@ -1,8 +1,8 @@
-package acceptance
+package acceptance.libraryTypes
 
 import com.passfailerror.Jenkinson
 import groovy.test.GroovyTestCase
-import objectiveLibrary.ObjectiveLibrary
+import objectiveLibraryExamples.ObjectiveLibrary
 
 import static com.passfailerror.assertion.Assertion.step
 

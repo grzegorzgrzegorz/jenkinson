@@ -1,4 +1,4 @@
-package acceptance
+package acceptance.libraryTypes
 
 import com.passfailerror.Jenkinson
 import groovy.test.GroovyTestCase
@@ -11,7 +11,7 @@ class testSingletonLibrary extends GroovyTestCase {
 
     void setUp() {
         if (jenkinson == null) {
-            jenkinson = Jenkinson.initializeFromFile("singletonLibrary.groovy")
+            jenkinson = Jenkinson.initializeFromFile("singletonLibrary/singletonLibrary.groovy")
             jenkinson.runMethod("call")
         }
     }

@@ -1,4 +1,4 @@
-package com.passfailerror
+package declarative
 
 pipeline {
     agent { label 'test' }
@@ -13,7 +13,7 @@ pipeline {
         stage('Second stage') {
             steps {
                 echo 'Second'
-                sh 'java -version'
+                sh 'java --version'
                 env.SECOND_STAGE_VAR='value'
             }
         }
