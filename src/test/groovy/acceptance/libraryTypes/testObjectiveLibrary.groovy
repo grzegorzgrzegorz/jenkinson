@@ -1,4 +1,4 @@
-package acceptance
+package acceptance.libraryTypes
 
 import com.passfailerror.Jenkinson
 import groovy.test.GroovyTestCase

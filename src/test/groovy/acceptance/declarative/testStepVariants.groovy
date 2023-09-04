@@ -1,4 +1,4 @@
-package acceptance
+package acceptance.declarative
 
 import com.passfailerror.Jenkinson
 import groovy.test.GroovyTestCase
@@ -10,7 +10,7 @@ class testStepVariants extends GroovyTestCase {
     Jenkinson jenkinson
 
     void setUp() {
-        jenkinson = Jenkinson.initializeFromFile("pipeline_with_emulator.groovy")
+        jenkinson = Jenkinson.initializeFromFile("declarative/pipeline_with_emulator.groovy")
         jenkinson.mockStep("parameterlessCustomStep")
     }
 

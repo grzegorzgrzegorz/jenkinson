@@ -1,3 +1,5 @@
+package singletonLibrary
+
 def call(param) {
     echo "param: " + param
     innerMethod(param)

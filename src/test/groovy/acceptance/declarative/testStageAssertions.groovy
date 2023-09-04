@@ -1,4 +1,4 @@
-package acceptance
+package acceptance.declarative
 
 import com.passfailerror.Jenkinson
 import groovy.test.GroovyTestCase
@@ -11,7 +11,7 @@ class testStageAssertions extends GroovyTestCase {
 
     void setUp() {
         if (jenkinson == null) {
-            jenkinson = Jenkinson.initializeFromFile("simplePipeline.groovy")
+            jenkinson = Jenkinson.initializeFromFile("declarative/simplePipeline.groovy")
             jenkinson.run()
         }
     }

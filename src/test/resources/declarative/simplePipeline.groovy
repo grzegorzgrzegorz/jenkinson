@@ -1,4 +1,4 @@
-package com.passfailerror
+package declarative
 
 pipeline {
     agent { label 'test' }
