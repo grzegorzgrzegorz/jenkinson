@@ -1,7 +1,7 @@
 import com.passfailerror.Utils
 import groovy.test.GroovyTestCase
 
-class testUtils extends GroovyTestCase {
+class UtilsTest extends GroovyTestCase {
 
     void test_utilThrowsException_whenMapContainsIllegalValueType() {
         //WHEN

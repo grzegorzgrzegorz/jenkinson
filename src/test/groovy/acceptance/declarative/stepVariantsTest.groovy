@@ -5,7 +5,7 @@ import groovy.test.GroovyTestCase
 
 import static com.passfailerror.assertion.Assertion.stage
 
-class testStepVariants extends GroovyTestCase {
+class stepVariantsTest extends GroovyTestCase {
 
     Jenkinson jenkinson
 

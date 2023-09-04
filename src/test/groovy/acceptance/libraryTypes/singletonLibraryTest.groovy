@@ -5,7 +5,7 @@ import groovy.test.GroovyTestCase
 
 import static com.passfailerror.assertion.Assertion.step
 
-class testSingletonLibrary extends GroovyTestCase {
+class singletonLibraryTest extends GroovyTestCase {
 
     def jenkinson
 

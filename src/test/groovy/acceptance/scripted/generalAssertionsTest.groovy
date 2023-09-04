@@ -1,17 +1,17 @@
-package acceptance.declarative
+package acceptance.scripted
 
 import com.passfailerror.Jenkinson
 import groovy.test.GroovyTestCase
 
 import static com.passfailerror.assertion.Assertion.step
 
-class testGeneralAssertions extends GroovyTestCase {
+class generalAssertionsTest extends GroovyTestCase {
 
     def jenkinson
 
     void setUp() {
         if (jenkinson == null) {
-            jenkinson = Jenkinson.initializeFromFile("declarative/simplePipeline.groovy")
+            jenkinson = Jenkinson.initializeFromFile("scripted/scriptedSimplePipeline.groovy")
             jenkinson.run()
         }
     }
@@ -22,14 +22,6 @@ class testGeneralAssertions extends GroovyTestCase {
 
     void test_stepIsCalled_returnsTrue_forExistingStepWithParam_insideStage() {
         assert step("sh", "mvn").isCalled()
-    }
-
-    void test_stepIsCalled_returnsTrue_forExistingStep_outsideStages() {
-        assert step("label").isCalled()
-    }
-
-    void test_stepIsCalled_returnsTrue_forExistingStepWithParam_outsideStages() {
-        assert step("label", "test").isCalled()
     }
 
     void test_stepIsCalled_returnsFalse_forUnexistingStep() {

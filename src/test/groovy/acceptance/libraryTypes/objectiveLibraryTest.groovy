@@ -6,7 +6,7 @@ import objectiveLibraryExamples.ObjectiveLibrary
 
 import static com.passfailerror.assertion.Assertion.step
 
-class testObjectiveLibrary extends GroovyTestCase {
+class objectiveLibraryTest extends GroovyTestCase {
 
     Jenkinson jenkinson
     def paramsMap
