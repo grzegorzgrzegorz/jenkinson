@@ -83,6 +83,24 @@ Then it is possible to run it and make assertions:
     //THEN
     assert stage("Second stage").hasEnvVariable("TEST_GLOBAL_VAR")
 
+## Scripted pipeline
+Given is the scripted pipeline:
+
+    node('master'){
+        stage('First stage') {
+            echo 'First'
+            sh 'mvn --version'
+            env.TEST_GLOBAL_VAR='global_value'
+        }
+        stage('Second stage') {
+            echo 'Second'
+            sh 'java --version"'
+            env.SECOND_STAGE_VAR='value'
+        }
+    }
+
+Then it is possible to run it and make all assertions just as for declarative pipeline.
+
 ## Advanced step handling
 By default step is mocked and doesn't do any action: doesn't execute any code or return any value. However it is possible to change this behaviour for more advanced assertions.
 
