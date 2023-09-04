@@ -3,7 +3,7 @@ package resultStack
 import com.passfailerror.Jenkinson
 import groovy.test.GroovyTestCase
 
-class testResultStackValidator extends GroovyTestCase {
+class ResultStackValidatorTest extends GroovyTestCase {
 
 
     void testUnexistingStageAssertion_returnsFalse_evenWhenStepExists() {

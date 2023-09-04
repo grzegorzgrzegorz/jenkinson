@@ -4,7 +4,7 @@ import com.passfailerror.Jenkinson
 import com.passfailerror.resultStack.ResultStackEntry
 import groovy.test.GroovyTestCase
 
-class testResultStackProcessor extends GroovyTestCase {
+class ResultStackProcessorTest extends GroovyTestCase {
 
     ResultStackEntry getLastItemOfInvocationStack() {
         return jenkinson.getResultStackProcessor().getResultStack().getInvocationStack().last()
