@@ -16,19 +16,19 @@ class singletonLibraryTest extends GroovyTestCase {
         }
     }
 
-    void test_stepIsCalled_insideLibrary() {
+    void "test: step inside library is called"() {
         assert step("echo", "param:").isCalled()
     }
 
-    void test_stepIsCalled_insideNestedLibrary() {
+    void "test: step inside nested library is called"() {
         assert step("echo", "innerParam:").isCalled()
     }
 
-    void test_assertingExistingStep_withUnexistingParameter_isFalse() {
+    void "test: existing step with specific unexisting parameter is not called"() {
         assert step("echo", "unexisting").isCalled() == false
     }
 
-    void test_assertingUnexistingStep_withExistingParameter_isFalse() {
+    void "test: unexisting step with specific existing parameter is not called"() {
         assert step("unexistingStep", "param:").isCalled() == false
     }
 
