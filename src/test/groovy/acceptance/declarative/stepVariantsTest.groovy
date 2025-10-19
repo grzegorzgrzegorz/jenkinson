@@ -14,19 +14,19 @@ class stepVariantsTest extends GroovyTestCase {
         jenkinson.mockStep("parameterlessCustomStep")
     }
 
-    void test_step_returns_null() {
-        //WHEN
+    void "test: step returns null"() {
+        when:
         jenkinson.run()
-        //THEN
+        then:
         assert stage('First stage').calls("echo", "defaultResult:null")
     }
 
-    void test_step_isExecuted() {
-        //GIVEN
+    void "test: step is executed"() {
+        given:
         jenkinson.executeStep("sh").parameters(["git --version"])
-        //WHEN
+        when:
         jenkinson.run()
-        //THEN
+        then:
         assert stage('Second stage').calls("echo", "resultBasingOnRealExecution:git version")
     }
 
@@ -46,42 +46,42 @@ class stepVariantsTest extends GroovyTestCase {
         }
     }
 
-    void test_step_isExecuted_usingCustomCode() {
-        //GIVEN
+    void "test: step is executed using custom code"() {
+        given:
         jenkinson.emulateStep("sh").parameters(["complicatedAppWhichComputesResultInProduction"]).setEmulator(new CustomShEmulator())
-        //WHEN
+        when:
         jenkinson.run()
-        //THEN
+        then:
         assert stage('Third stage').calls("echo", "resultBasingOnCustomCode:inputData computed result")
     }
 
-    void test_step_isExecuted_usingClosureWithParameters() {
-        //GIVEN
+    void "test: step is executed using closure with parameters"() {
+        given:
         def closure = { parameters -> return parameters[0].script}
         jenkinson.mockStep("sh").parameters(["complicatedAppWhichComputesResultInProduction"]).returnValue(closure)
-        //WHEN
+        when:
         jenkinson.run()
-        //THEN
+        then:
         assert stage('Third stage').calls("echo", "resultBasingOnCustomCode:complicatedAppWhichComputesResultInProduction inputData")
     }
 
 
-    void test_step_isExecuted_usingParameterlessClosure() {
-        //GIVEN
+    void "test: step is executed using parameterless closure"() {
+        given:
         def closure = {-> return "value from closure"}
         jenkinson.mockStep("parameterlessCustomStep").returnValue(closure)
-        //WHEN
+        when:
         jenkinson.run()
-        //THEN
+        then:
         assert stage('Third stage').calls("echo", "resultBasingOnCustomCode2:value from closure")
     }
 
-    void test_step_returnsMockedValue() {
-        //GIVEN
+    void "test: step returns mocked value"() {
+        given:
         jenkinson.mockStep("sh").parameters(["otherApp"]).returnValue("mocked result")
-        //WHEN
+        when:
         jenkinson.run()
-        //THEN
+        then:
         assert stage('Fourth stage').calls("echo", "mockedResult:mocked result")
     }
 

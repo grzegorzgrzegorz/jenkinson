@@ -3,39 +3,39 @@ import groovy.test.GroovyTestCase
 
 class UtilsTest extends GroovyTestCase {
 
-    void test_utilThrowsException_whenMapContainsIllegalValueType() {
-        //WHEN
+    void "test: util throws exception when Map contains illegal value type"() {
+        when:
         def map = ['someKey': 'someValue1']
-        //THEN
+        then:
         def exception = shouldFail(IllegalArgumentException.class) { Utils.instance.mapContainsValue(map, "someValue1") }
         assert exception.contains("illegal value")
     }
 
-    void test_utilReturnsTrue_whenMapContainsValue() {
-        //WHEN
+    void "test: util returns True when Map contains value"() {
+        when:
         def map = ['someKey': ['someValue1', 'someValue2']]
-        //THEN
+        then:
         assert Utils.instance.mapContainsValue(map, "someValue1")
     }
 
-    void test_utilReturnsFalse_whenMapNotContainsValue() {
-        //WHEN
+    void "test: util returns False when Map not contains value"() {
+        when:
         def map = ['someKey': ['someValue1', 'someValue2']]
-        //THEN
+        then:
         assert Utils.instance.mapContainsValue(map, "unexisting") == false
     }
 
-    void test_utilReturnsTrue_whenListContainsValue() {
-        //WHEN
+    void "test: util returns True when List contains value"() {
+        when:
         def list = ['someValue1', 'someValue2']
-        //THEN
+        then:
         assert Utils.instance.listContainsValue(list, "someValue1")
     }
 
-    void test_utilReturnsFalse_whenListNotContainValue() {
-        //WHEN
+    void "test: util returns False when List not contain value"() {
+        when:
         def list = ['someValue1', 'someValue2']
-        //THEN
+        then:
         assert Utils.instance.listContainsValue(list, "unexisting") == false
     }
 

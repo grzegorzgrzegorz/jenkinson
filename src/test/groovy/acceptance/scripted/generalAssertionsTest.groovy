@@ -16,23 +16,23 @@ class generalAssertionsTest extends GroovyTestCase {
         }
     }
 
-    void test_stepIsCalled_returnsTrue_forExistingStep_insideStage() {
+    void "test: specific existing step is called"() {
         assert step("sh").isCalled()
     }
 
-    void test_stepIsCalled_returnsTrue_forExistingStepWithParam_insideStage() {
+    void "test: existing step with specific parameter is called"() {
         assert step("sh", "mvn").isCalled()
     }
 
-    void test_stepIsCalled_returnsFalse_forUnexistingStep() {
+    void "test: unexisting step is not called"() {
         assert step("unexisting").isCalled() == false
     }
 
-    void test_stepIsCalled_returnsFalse_forExistingStepWithUnexistingParam_insideStage() {
+    void "test: existing step with specific unexisting parameter is not called"() {
         assert step("sh", "unexisting").isCalled() == false
     }
 
-    void test_stepIsCalled_returnsFalse_forExistingStepWithUnexistingParam_outsideStages() {
+    void "test: existing step with specific unexisting parameter outside stages section is not called"() {
         assert step("label", "unexisting").isCalled() == false
     }
 }

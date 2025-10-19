@@ -18,28 +18,28 @@ class ResultStackProcessorTest extends GroovyTestCase {
         jenkinson.run()
     }
 
-    void testContentBasedCallStackPart_isString_andContainsExecutedLine() {
-        //WHEN
+    void "test: FileContentBasedCallStack is String and contains executed line"() {
+        when:
         jenkinson.run()
-        //THEN
+        then:
         assert getLastItemOfInvocationStack().getFileContentBasedCallStack() instanceof String
         assert getLastItemOfInvocationStack().getFileContentBasedCallStack().contentEquals("echo \"testing\"")
     }
 
-    void testInvocationsPart_isMap_andContainsInvokedCommand() {
-        //WHEN
+    void "test: InvocationsPart is Map and contains invoked command"() {
+        when:
         jenkinson.run()
-        //THEN
+        then:
         assert getLastItemOfInvocationStack().getInvocations() instanceof Map
         assert getLastItemOfInvocationStack().getInvocations().containsKey("echo")
         assert getLastItemOfInvocationStack().getInvocations().get("echo") instanceof List
         assert getLastItemOfInvocationStack().getInvocations().get("echo")[0] == "testing"
     }
 
-    void testRuntimeVariablesPart_isLinkedHashMap_andUsesMapForEnvValue() {
-        //WHEN
+    void "test: RuntimeVariablesPart is LinkedHashMap and uses Map for env value"() {
+        when:
         jenkinson.run()
-        //THEN
+        then:
         assert getLastItemOfInvocationStack().getRuntimeVariables() instanceof LinkedHashMap
         assert getLastItemOfInvocationStack().getRuntimeVariables().containsKey("env")
         assert getLastItemOfInvocationStack().getRuntimeVariables().get("env") instanceof Map

@@ -19,31 +19,31 @@ class objectiveLibraryTest extends GroovyTestCase {
         objectiveLibrary.initialize()
     }
 
-    void test_objectiveLibraryAssertion_returnsTrue_forExistingInvocation() {
-        //WHEN
+    void "test: existing step with existing parameter is called"() {
+        when:
         objectiveLibrary.run()
-        //THEN
+        then:
         assert step("echo", "I am working in first stage").isCalled()
     }
 
-    void test_objectiveLibraryAssertion_returnsFalse_forUnexistingValueInvocation() {
-        //WHEN
+    void "test: existing step with unexisting parameter is not called"() {
+        when:
         objectiveLibrary.run()
-        //THEN
+        then:
         assert step("echo", "Unexisting text").isCalled() == false
     }
 
-    void test_objectiveLibraryAssertion_returnsFalse_forUnexistingStepInvocation() {
-        //WHEN
+    void "test: unexisting step is not called"() {
+        when:
         objectiveLibrary.run()
-        //THEN
+        then:
         assert step("unexisting step", "I am working in first stage").isCalled() == false
     }
 
-    void test_objectiveLibraryAssertion_returnsFalse_forStepWhichExistsInNotExecutedPartOfLibrary() {
-        //WHEN
+    void "test: step which exists but which was not executed is not called"() {
+        when:
         objectiveLibrary.secondStage()
-        //THEN
+        then:
         assert step("echo", "I am working in first stage").isCalled() == false
     }
 
