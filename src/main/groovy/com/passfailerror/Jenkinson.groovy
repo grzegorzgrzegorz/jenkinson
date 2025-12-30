@@ -58,6 +58,7 @@ class Jenkinson {
         this.steps = new Steps(resultStackProcessor)
         this.sections = new Sections(resultStackProcessor)
         mockJenkinsDefaults(pipelineScript)
+        mockSectionDefaults(pipelineScript)
     }
 
     def run() {
@@ -80,6 +81,9 @@ class Jenkinson {
 
     def mockJenkinsDefaults(pipelineScript) {
         steps.mockDefaults(pipelineScript)
+    }
+
+    def mockSectionDefaults(pipelineScript) {
         sections.mockDefaults(pipelineScript)
     }
 
