@@ -17,10 +17,6 @@ class Steps implements Token {
     def actionableList = []
 
     def mockDefaults(pipelineScript) {
-        pipelineScript.metaClass.methodMissing = { String currentStepName, params ->
-            log.info(currentStepName + " " + params[0].toString())
-            resultStackProcessor.storeInvocation(currentStepName, params, pipelineScript.getBinding().getVariables())
-        }
     }
 
     def mock(pipelineScript) {
