@@ -16,7 +16,4 @@ class Sections implements Token {
 
     def mock(pipelineScript) {
     }
-
-    def mockDefaults(pipelineScript) {
-    }
 }
