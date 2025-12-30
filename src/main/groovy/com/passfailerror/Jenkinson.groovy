@@ -1,6 +1,5 @@
 package com.passfailerror
 
-
 import com.passfailerror.assertion.DeclarativeAssertion
 import com.passfailerror.assertion.GeneralAssertion
 import com.passfailerror.syntax.actionable.EmulatingToken
@@ -79,8 +78,19 @@ class Jenkinson {
     }
 
     def mockJenkinsDefaults(pipelineScript) {
-        steps.mockDefaults(pipelineScript)
-        sections.mockDefaults(pipelineScript)
+        pipelineScript.metaClass.methodMissing = { String currentStepName, params ->
+            if (params.find({ it instanceof Closure}) != null) {
+                log.info(currentStepName)
+                if (params.length > 1) {
+                    params[1].call() // stage("name"){closure}
+                } else {
+                    params[0].call() // steps{closure}
+                }
+            } else {
+                log.info(currentStepName + " " + params[0].toString())
+            }
+            resultStackProcessor.storeInvocation(currentStepName, params, pipelineScript.getBinding().getVariables())
+        }
     }
 
     ActionableTokenDsl emulateStep(item) {
