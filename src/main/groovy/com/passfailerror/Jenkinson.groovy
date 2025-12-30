@@ -57,7 +57,6 @@ class Jenkinson {
         this.steps = new Steps(resultStackProcessor)
         this.sections = new Sections(resultStackProcessor)
         mockJenkinsDefaults(pipelineScript)
-        mockSectionDefaults(pipelineScript)
     }
 
     def run() {
@@ -92,10 +91,6 @@ class Jenkinson {
             }
             resultStackProcessor.storeInvocation(currentStepName, params, pipelineScript.getBinding().getVariables())
         }
-    }
-
-    def mockSectionDefaults(pipelineScript) {
-        sections.mockDefaults(pipelineScript)
     }
 
     ActionableTokenDsl emulateStep(item) {
