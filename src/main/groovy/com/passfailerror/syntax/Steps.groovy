@@ -14,29 +14,6 @@ class Steps implements Token {
         this.resultStackProcessor = resultStackProcessor
     }
 
-    def defaultSteps = ["label",
-                        "echo",
-                        "sh",
-                        "logRotator",
-                        "buildDiscarder",
-                        "skipDefaultChackout",
-                        "timestamps",
-                        "timeout",
-                        "disableConcurrentBuilds",
-                        "office365ConnectorWebhooks",
-                        "cleanWs",
-                        "library",
-                        "tool",
-                        "modernSCM",
-                        "checkout",
-                        "build",
-                        "usernamePassword",
-                        "office365ConnectorSend",
-                        "archiveArtifacts",
-                        "beforeAgent",
-                        "environment",
-                        "cron"]
-
     def actionableList = []
 
     def mockDefaults(pipelineScript) {
